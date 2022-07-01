@@ -52,7 +52,6 @@ func (l *list) addHead(node *ListItem) {
 		l.tail = node
 	}
 	l.head = node
-
 }
 
 func (l *list) PushFront(v interface{}) *ListItem {
