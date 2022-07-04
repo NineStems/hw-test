@@ -1,6 +1,7 @@
 package hw03frequencyanalysis
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -43,40 +44,186 @@ var text = `Как видите, он  спускается  по  лестни�
 	посидеть у огня и послушать какую-нибудь интересную сказку.
 		В этот вечер...`
 
-func TestTop10(t *testing.T) {
-	t.Run("no words in empty string", func(t *testing.T) {
-		require.Len(t, Top10(""), 0)
-	})
+var smallLenText = `текст с переносами строки
+	табуляцией, с запятыми и со знаками!`
 
-	t.Run("positive test", func(t *testing.T) {
-		if taskWithAsteriskIsCompleted {
-			expected := []string{
-				"а",         // 8
-				"он",        // 8
-				"и",         // 6
-				"ты",        // 5
-				"что",       // 5
-				"в",         // 4
-				"его",       // 4
-				"если",      // 4
-				"кристофер", // 4
-				"не",        // 4
+func TestTop10(t *testing.T) {
+	type args struct {
+		row string
+	}
+	tests := []struct {
+		name        string
+		args        args
+		want        []string
+		wantLen     int
+		excludeTest bool
+	}{
+		{
+			name: "no words in empty string",
+			args: args{
+				row: "",
+			},
+			want:        nil,
+			wantLen:     0,
+			excludeTest: false,
+		},
+		{
+			name: "positive test string with small len",
+			args: args{
+				row: smallLenText,
+			},
+			want: []string{
+				"с",
+				"запятыми",
+				"знаками!",
+				"и",
+				"переносами",
+				"со",
+				"строки",
+				"табуляцией,",
+				"текст",
+			},
+			wantLen:     9,
+			excludeTest: false,
+		},
+		{
+			name: "positive test string with big len v1",
+			args: args{
+				row: text,
+			},
+			want: []string{
+				"он",
+				"а",
+				"и",
+				"ты",
+				"что",
+				"-",
+				"Кристофер",
+				"если",
+				"не",
+				"то",
+			},
+			wantLen:     10,
+			excludeTest: taskWithAsteriskIsCompleted,
+		},
+		{
+			name: "positive test string with big len v2",
+			args: args{
+				row: text,
+			},
+			want: []string{
+				"а",
+				"он",
+				"и",
+				"ты",
+				"что",
+				"в",
+				"его",
+				"если",
+				"кристофер",
+				"не",
+			},
+			wantLen:     10,
+			excludeTest: !taskWithAsteriskIsCompleted,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.excludeTest {
+				t.SkipNow()
 			}
-			require.Equal(t, expected, Top10(text))
-		} else {
-			expected := []string{
-				"он",        // 8
-				"а",         // 6
-				"и",         // 6
-				"ты",        // 5
-				"что",       // 5
-				"-",         // 4
-				"Кристофер", // 4
-				"если",      // 4
-				"не",        // 4
-				"то",        // 4
+			if got := Top10(tt.args.row); !reflect.DeepEqual(got, tt.want) {
+				require.Len(t, len(got), tt.wantLen)
+				require.Equal(t, tt.want, got)
 			}
-			require.Equal(t, expected, Top10(text))
-		}
-	})
+		})
+	}
+}
+
+func Test_getUniqMap(t *testing.T) {
+	type args struct {
+		words []string
+	}
+	tests := []struct {
+		name string
+		args args
+		want map[string]counter
+	}{
+		{
+			name: "empty input",
+			args: args{
+				words: []string{},
+			},
+			want: nil,
+		},
+		{
+			name: "positive",
+			args: args{
+				words: []string{"слово", "слово", "слово", "два", "два"},
+			},
+			want: map[string]counter{
+				"слово": {
+					count: 3,
+					value: "слово",
+				},
+				"два": {
+					count: 2,
+					value: "два",
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := getUniqMap(tt.args.words); !reflect.DeepEqual(got, tt.want) {
+				require.Equal(t, tt.want, got)
+			}
+		})
+	}
+}
+
+func Test_transformToSortSlice(t *testing.T) {
+	type args struct {
+		uniq map[string]counter
+	}
+	tests := []struct {
+		name string
+		args args
+		want []string
+	}{
+		{
+			name: "empty input",
+			args: args{
+				uniq: nil,
+			},
+			want: nil,
+		},
+		{
+			name: "positive",
+			args: args{
+				uniq: map[string]counter{
+					"слово": {
+						count: 3,
+						value: "слово",
+					},
+					"два": {
+						count: 2,
+						value: "два",
+					},
+					"три": {
+						count: 8,
+						value: "три",
+					},
+				},
+			},
+			want: []string{"три", "слово", "два"},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := transformToSortSlice(tt.args.uniq); !reflect.DeepEqual(got, tt.want) {
+				require.Equal(t, tt.want, got)
+			}
+		})
+	}
 }
