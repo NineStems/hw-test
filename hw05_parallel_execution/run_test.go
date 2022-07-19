@@ -14,6 +14,15 @@ import (
 
 func TestRun(t *testing.T) {
 	defer goleak.VerifyNone(t)
+	t.Run("bad params error", func(t *testing.T) {
+		err := Run(nil, 0, 0)
+		require.ErrorIs(t, err, ErrEmptyTaskList)
+		tasks := make([]Task, 1)
+		err = Run(tasks, 0, 0)
+		require.ErrorIs(t, err, ErrInvalidRoutineNum)
+		err = Run(tasks, 1, 0)
+		require.ErrorIs(t, err, ErrErrorsLimitExceeded)
+	})
 
 	t.Run("if were errors in first M tasks, than finished not more N+M tasks", func(t *testing.T) {
 		tasksCount := 50
