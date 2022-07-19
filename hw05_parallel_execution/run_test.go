@@ -55,7 +55,6 @@ func TestRun(t *testing.T) {
 				return nil
 			})
 		}
-
 		workersCount := 5
 		maxErrorsCount := 1
 
