@@ -41,6 +41,14 @@ func TestPipeline(t *testing.T) {
 		g("two", func(v interface{}) interface{} { return strconv.Itoa(v.(int)) }),
 	}
 
+	t.Run("empty channel", func(t *testing.T) {
+		in := make(Bi)
+		res := ExecutePipeline(in, nil)
+		require.Nil(t, res)
+		res = ExecutePipeline(in, nil, []Stage{}...)
+		require.Nil(t, res)
+	})
+
 	t.Run("only logic case", func(t *testing.T) {
 		in := make(Bi)
 		data := []int{1, 2}
