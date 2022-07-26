@@ -12,22 +12,25 @@ func ExecutePipeline(in In, done In, stages ...Stage) Out {
 	if len(stages) == 0 {
 		return nil
 	}
-	innerIn := in
+	out := in
 	for i := range stages {
-		innerIn = next(innerIn, done, stages[i])
+		out = next(stages[i](out), done)
 	}
-	return innerIn
+	return out
 }
 
-func next(in, done In, f Stage) Out {
+func next(in, done In) Out {
 	out := make(Bi)
 	go func() {
 		defer close(out)
-		for data := range f(in) {
+		for {
 			select {
 			case <-done:
 				return
-			default:
+			case data, open := <-in:
+				if !open {
+					return
+				}
 				out <- data
 			}
 		}
