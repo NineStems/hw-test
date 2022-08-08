@@ -36,6 +36,37 @@ func TestPipeline(t *testing.T) {
 		g("Stringifier", func(v interface{}) interface{} { return strconv.Itoa(v.(int)) }),
 	}
 
+	stagesDev := []Stage{
+		g("one", func(v interface{}) interface{} { return v.(int) + 1 }),
+		g("two", func(v interface{}) interface{} { return strconv.Itoa(v.(int)) }),
+	}
+
+	t.Run("empty channel", func(t *testing.T) {
+		in := make(Bi)
+		res := ExecutePipeline(in, nil)
+		require.Nil(t, res)
+		res = ExecutePipeline(in, nil, []Stage{}...)
+		require.Nil(t, res)
+	})
+
+	t.Run("only logic case", func(t *testing.T) {
+		in := make(Bi)
+		data := []int{1, 2}
+
+		go func() {
+			for _, v := range data {
+				in <- v
+			}
+			defer close(in)
+		}()
+
+		result := make([]string, 0, 3)
+		for s := range ExecutePipeline(in, nil, stagesDev...) {
+			result = append(result, s.(string))
+		}
+		require.Equal(t, []string{"2", "3"}, result)
+	})
+
 	t.Run("simple case", func(t *testing.T) {
 		in := make(Bi)
 		data := []int{1, 2, 3, 4, 5}
@@ -53,7 +84,6 @@ func TestPipeline(t *testing.T) {
 			result = append(result, s.(string))
 		}
 		elapsed := time.Since(start)
-
 		require.Equal(t, []string{"102", "104", "106", "108", "110"}, result)
 		require.Less(t,
 			int64(elapsed),
