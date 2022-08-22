@@ -2,15 +2,13 @@ package main
 
 import (
 	"errors"
-	"github.com/cheggaaa/pb/v3"
 	"io"
 	"os"
+
+	"github.com/cheggaaa/pb/v3"
 )
 
-var (
-	ErrUnsupportedFile       = errors.New("unsupported file")
-	ErrOffsetExceedsFileSize = errors.New("offset exceeds file size")
-)
+var ErrOffsetExceedsFileSize = errors.New("offset exceeds file size")
 
 func Copy(fromPath, toPath string, offset, limit int64) error {
 	ff, err := os.Open(fromPath)
@@ -24,28 +22,38 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		return err
 	}
 
-	if stat.Size() < offset {
-		return ErrOffsetExceedsFileSize
-	}
-
-	if limit == 0 || limit > stat.Size() {
-		limit = stat.Size()
-	}
-
-	bar := pb.Full.Start64(limit)
-	sectionRead := io.NewSectionReader(ff, offset, limit)
-
 	ft, err := os.Create(toPath)
 	if err != nil {
 		return err
 	}
 	defer ft.Close()
 
-	_, err = io.Copy(ft, bar.NewProxyReader(sectionRead))
+	return copyReader(ff, ft, offset, limit, stat.Size())
+}
+
+func copyReader(fr io.ReaderAt, fw io.Writer, offset, limit, size int64) error {
+	if size < offset {
+		return ErrOffsetExceedsFileSize
+	}
+
+	if limit == 0 || limit > size {
+		limit = size
+	}
+
+	sectionRead := io.NewSectionReader(fr, offset, limit)
+
+	switch {
+	case offset > 0 && limit == size:
+		limit -= offset
+	case offset > 0 && size-(limit+offset) < 0:
+		limit = size - offset
+	}
+
+	bar := pb.Full.Start64(limit)
+	_, err := io.Copy(fw, bar.NewProxyReader(sectionRead))
 	if err != nil {
 		return err
 	}
 	bar.Finish()
-
 	return nil
 }
