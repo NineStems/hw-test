@@ -23,7 +23,7 @@ func ReadDir(dir string) (Environment, error) {
 	if err != nil {
 		return nil, err
 	}
-	envs := make(map[string]EnvValue, 0)
+	envs := make(map[string]EnvValue)
 	for _, file := range files {
 		if file.IsDir() {
 			continue
