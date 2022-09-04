@@ -2,6 +2,7 @@ package hw09structvalidator
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"testing"
 )
@@ -34,26 +35,111 @@ type (
 		Code int    `validate:"in:200,404,500"`
 		Body string `json:"omitempty"`
 	}
+
+	NestedTable struct {
+		Name                    string     `validate:"in:test"`
+		ResponseLine            Response   `validate:"nested"`
+		ResponseArray           []Response `validate:"nested"`
+		ResponseArrayWOValidate []Response
+	}
+
+	BadTagValue struct {
+		UndefinedTags  string `validate:"udTest:13|SomeNew:123,456"`
+		BadStringsTags string `validate:"len:bad|in|regexp:\\bad"`
+		BadIntTags     int    `validate:"min:bad|max:bad|in:test,some"`
+	}
 )
 
 func TestValidate(t *testing.T) {
 	tests := []struct {
-		in          interface{}
-		expectedErr error
+		name           string
+		in             interface{}
+		expectedSErr   error
+		expectedVError error
 	}{
 		{
-			// Place your code here.
+			name: "good system error",
+			in: BadTagValue{
+				UndefinedTags:  "test",
+				BadStringsTags: "test",
+				BadIntTags:     1234,
+			},
+			expectedSErr: ErrSystem,
 		},
-		// ...
-		// Place your code here.
+		{
+			name: "good check user",
+			in: User{
+				ID:     "123456789012345678901234567890123456",
+				Name:   "any name",
+				Age:    18,
+				Email:  "Test@test.com",
+				Role:   "admin",
+				Phones: []string{"89181113322"},
+				meta:   []byte("any date"),
+			},
+			expectedSErr:   nil,
+			expectedVError: nil,
+		},
+		{
+			name: "good check nested",
+			in: NestedTable{
+				Name: "test",
+				ResponseLine: Response{
+					Code: 200,
+				},
+				ResponseArray: []Response{
+					{Code: 404},
+					{Code: 500},
+				},
+				ResponseArrayWOValidate: []Response{
+					{Code: -1},
+				},
+			},
+			expectedSErr:   nil,
+			expectedVError: nil,
+		},
+		{
+			name: "good validation user",
+			in: User{
+				ID:     "1234",
+				Name:   "any name",
+				Age:    15,
+				Email:  "wrong",
+				Role:   "-",
+				Phones: []string{"000"},
+				meta:   []byte("any date"),
+			},
+			expectedVError: ErrValidation,
+		},
 	}
 
 	for i, tt := range tests {
-		t.Run(fmt.Sprintf("case %d", i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("case %d: %v", i, tt.name), func(t *testing.T) {
 			tt := tt
 			t.Parallel()
-
-			// Place your code here.
+			err := Validate(tt.in)
+			if tt.expectedSErr != nil {
+				if err == nil {
+					t.Errorf("expected system error but expected nil")
+				}
+				if !(errors.Is(err, tt.expectedSErr)) {
+					t.Errorf("error '%v' but expected '%v'", err, tt.expectedSErr)
+				}
+				return
+			}
+			if tt.expectedVError != nil {
+				if err == nil {
+					t.Errorf("expected validation errors but expected nil")
+					return
+				}
+				if !errors.Is(err, tt.expectedVError) {
+					t.Errorf("expected validation error %v but expected %v", err, tt.expectedVError)
+					return
+				}
+			}
+			if err != nil {
+				t.Errorf("unexpected error '%v'", err)
+			}
 			_ = tt
 		})
 	}
