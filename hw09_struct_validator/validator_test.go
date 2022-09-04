@@ -109,6 +109,7 @@ func TestValidate(t *testing.T) {
 				Phones: []string{"000"},
 				meta:   []byte("any date"),
 			},
+			expectedSErr:   nil,
 			expectedVError: ErrValidation,
 		},
 	}
@@ -121,6 +122,7 @@ func TestValidate(t *testing.T) {
 			if tt.expectedSErr != nil {
 				if err == nil {
 					t.Errorf("expected system error but expected nil")
+					return
 				}
 				if !(errors.Is(err, tt.expectedSErr)) {
 					t.Errorf("error '%v' but expected '%v'", err, tt.expectedSErr)
@@ -133,9 +135,9 @@ func TestValidate(t *testing.T) {
 					return
 				}
 				if !errors.Is(err, tt.expectedVError) {
-					t.Errorf("expected validation error %v but expected %v", err, tt.expectedVError)
-					return
+					t.Errorf("expected validation error %v but recived %v", err, tt.expectedVError)
 				}
+				return
 			}
 			if err != nil {
 				t.Errorf("unexpected error '%v'", err)
