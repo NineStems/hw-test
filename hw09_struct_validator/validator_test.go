@@ -135,7 +135,7 @@ func TestValidate(t *testing.T) {
 					return
 				}
 				if !errors.Is(err, tt.expectedVError) {
-					t.Errorf("expected validation error %v but recived %v", err, tt.expectedVError)
+					t.Errorf("expected validation error %v but got %v", tt.expectedVError, err)
 				}
 				return
 			}
