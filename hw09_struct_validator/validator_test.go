@@ -58,6 +58,26 @@ func TestValidate(t *testing.T) {
 		expectedVError error
 	}{
 		{
+			name:         "nil input",
+			in:           nil,
+			expectedSErr: ErrExpectedStruct,
+		},
+		{
+			name:         "non struct input",
+			in:           42,
+			expectedSErr: ErrExpectedStruct,
+		},
+		{
+			name: "struct without tags",
+			in: Token{
+				Header:    nil,
+				Payload:   nil,
+				Signature: nil,
+			},
+			expectedSErr:   nil,
+			expectedVError: nil,
+		},
+		{
 			name: "good system error",
 			in: BadTagValue{
 				UndefinedTags:  "test",
