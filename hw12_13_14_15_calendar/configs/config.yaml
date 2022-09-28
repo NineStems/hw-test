@@ -1,0 +1,14 @@
+# Конфигурация логгера
+logger:
+  path: "log/logs.log"
+  level: "DEBUG"
+
+# Конфигурация сервера
+server:
+  host: "localhost"
+  port: 8080
+
+# Данные базы данных
+database:
+  user: "postgres"
+  pass: "password"

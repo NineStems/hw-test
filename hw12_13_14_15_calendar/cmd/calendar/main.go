@@ -9,7 +9,8 @@ import (
 	"time"
 
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/app"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
+	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/config"
+	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/pkg/logger"
 	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/server/http"
 	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
 )
@@ -28,13 +29,19 @@ func main() {
 		return
 	}
 
-	config := NewConfig()
-	logg := logger.New(config.Logger.Level)
+	cfg := config.New()
+	err := cfg.Apply("config/config.yaml") // todo позже использовать configFile
+	if err != nil {
+
+	}
+
+	log := logger.Console(cfg.Logger.Path, cfg.Logger.Level)
+	sugarLog := logger.InitSugarZapLogger(log)
 
 	storage := memorystorage.New()
-	calendar := app.New(logg, storage)
+	calendar := app.New(log, storage)
 
-	server := internalhttp.NewServer(logg, calendar)
+	server := internalhttp.NewServer(sugarLog, calendar)
 
 	ctx, cancel := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
@@ -47,14 +54,14 @@ func main() {
 		defer cancel()
 
 		if err := server.Stop(ctx); err != nil {
-			logg.Error("failed to stop http server: " + err.Error())
+			log.Error("failed to stop http server: " + err.Error())
 		}
 	}()
 
-	logg.Info("calendar is running...")
+	log.Info("calendar is running...")
 
 	if err := server.Start(ctx); err != nil {
-		logg.Error("failed to start http server: " + err.Error())
+		log.Error("failed to start http server: " + err.Error())
 		cancel()
 		os.Exit(1) //nolint:gocritic
 	}
