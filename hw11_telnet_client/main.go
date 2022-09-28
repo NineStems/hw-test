@@ -1,20 +1,18 @@
 package main
 
-// Go provides a `flag` package supporting basic
-// command-line flag parsing. We'll use this package to
-// implement our example command-line program.
 import (
 	"context"
 	"flag"
 	"log"
 	"net"
+	"os"
 	"os/signal"
 	"syscall"
 	"time"
 )
 import "fmt"
 
-var NotEnoughArgs = fmt.Errorf("not enouth arguments for establisment connection")
+var ErrNotEnoughArgs = fmt.Errorf("not enouth arguments for establisment connection")
 
 func main() {
 	timeout := flag.Duration("timeout", time.Second*10, "a duration")
@@ -22,22 +20,21 @@ func main() {
 
 	args := flag.Args()
 	if len(args) != 2 {
-		log.Fatal(NotEnoughArgs)
+		log.Fatal(ErrNotEnoughArgs)
 	}
 
 	host, port := args[0], args[1]
-	ctx := context.Background()
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT)
 	defer cancel()
 
 	addr := net.JoinHostPort(host, port)
 
-	client := NewTelnetClient(addr, *timeout, nil, nil)
+	client := NewTelnetClient(addr, *timeout, os.Stdin, os.Stdout)
 	defer client.Close()
 
-	err := client.Connect()
-	if err != nil {
-		log.Fatal(fmt.Errorf("client.Connect: %w", err))
+	if err := client.Connect(); err != nil {
+		fmt.Fprint(os.Stderr, err)
+		return
 	}
 
 	go func() {
