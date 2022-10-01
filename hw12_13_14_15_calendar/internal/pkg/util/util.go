@@ -32,7 +32,7 @@ func StartDateWeek(t time.Time) time.Time {
 	}
 	year, month, day := t.Date()
 	currentZeroDay := time.Date(year, month, day, 0, 0, 0, 0, time.Local)
-	return currentZeroDay.Add(-1 * (weekday - 1) * 24 * time.Hour)
+	return currentZeroDay.Add(-1 * (weekday - 1) * 24 * time.Hour) //nolint: durationcheck
 }
 
 // EndDateWeek преобразует дату до конца недели.
@@ -44,7 +44,7 @@ func EndDateWeek(t time.Time) time.Time {
 	weekday = 7 - weekday
 	year, month, day := t.Date()
 	currentZeroDay := time.Date(year, month, day, 23, 59, 59, 0, time.Local)
-	return currentZeroDay.Add(1 * (weekday) * 24 * time.Hour)
+	return currentZeroDay.Add(1 * (weekday) * 24 * time.Hour) //nolint: durationcheck
 }
 
 // StartDateMonth преобразует дату до начала месяца.

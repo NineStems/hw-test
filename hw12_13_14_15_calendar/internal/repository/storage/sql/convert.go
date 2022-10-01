@@ -7,26 +7,26 @@ import (
 // eventFromDomain конвертирует доменный тип в тип репозитория.
 func eventFromDomain(in *domain.Event) *Event {
 	return &Event{
-		ID:          in.ID,
-		OwnerID:     in.OwnerID,
-		Title:       in.Title,
-		Date:        in.Date,
-		Duration:    in.Duration,
-		ToDate:      in.ToDate,
-		Description: in.Description,
+		ID:               in.ID,
+		OwnerID:          in.OwnerID,
+		Title:            in.Title,
+		Date:             in.Date,
+		DateEnd:          in.DateEnd,
+		DateNotification: in.DateNotification,
+		Description:      in.Description,
 	}
 }
 
 // eventToDomain конвертирует тип репозитория к доменному.
 func eventToDomain(in *Event) *domain.Event {
 	return &domain.Event{
-		ID:          in.ID,
-		OwnerID:     in.OwnerID,
-		Title:       in.Title,
-		Date:        in.Date,
-		Duration:    in.Duration,
-		ToDate:      in.ToDate,
-		Description: in.Description,
+		ID:               in.ID,
+		OwnerID:          in.OwnerID,
+		Title:            in.Title,
+		Date:             in.Date,
+		DateEnd:          in.DateEnd,
+		DateNotification: in.DateNotification,
+		Description:      in.Description,
 	}
 }
 

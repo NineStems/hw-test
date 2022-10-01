@@ -39,8 +39,7 @@ func (a *App) CreateEvent(ctx context.Context, event *domain.Event) (string, err
 
 // UpdateEvent обновляет уведомление.
 func (a *App) UpdateEvent(ctx context.Context, event *domain.Event) error {
-	err := a.db.Update(ctx, event)
-	if err != nil {
+	if err := a.db.Update(ctx, event); err != nil {
 		return errors.Wrap(err, "a.db.Update")
 	}
 	return nil
@@ -48,8 +47,7 @@ func (a *App) UpdateEvent(ctx context.Context, event *domain.Event) error {
 
 // DeleteEvent удаляет уведомление.
 func (a *App) DeleteEvent(ctx context.Context, id string) error {
-	err := a.db.Delete(ctx, id)
-	if err != nil {
+	if err := a.db.Delete(ctx, id); err != nil {
 		return errors.Wrap(err, "a.db.Delete")
 	}
 	return nil

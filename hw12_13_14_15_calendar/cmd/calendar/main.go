@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"flag"
-	"math/rand"
 	"os"
 	"os/signal"
 	"syscall"
@@ -39,8 +38,6 @@ func main() {
 	log := logger.Console(cfg.Logger.Path, cfg.Logger.Level)
 	sugarLog := logger.InitSugarZapLogger(log)
 
-	rnd := rand.New(rand.NewSource(time.Now().Unix()))
-	rnd.Int()
 	storage := memorystorage.New(sugarLog)
 
 	calendar := app.New(sugarLog, storage)

@@ -9,12 +9,21 @@ import (
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/domain"
 )
 
-func TestStorage(t *testing.T) {
+func TestStorage(t *testing.T) { //nolint: gocognit
 	log := logmock.MockLogger{}
 	ctx := context.Background()
 	storage := New(log)
 
-	dateStart := time.Date(2022, 06, 28, 20, 30, 50, 0, time.UTC)
+	dateStart := time.Date(
+		2022,
+		06, //nolint: gofumpt
+		28,
+		20,
+		30,
+		50,
+		0,
+		time.UTC,
+	)
 	dateEnd := dateStart.Add(time.Hour * 1)
 
 	t.Run("create", func(t *testing.T) {
@@ -80,8 +89,8 @@ func TestStorage(t *testing.T) {
 		if events[0].OwnerID != 50 && events[0].Title != "new title" {
 			t.Errorf("operation update was bad")
 		}
-
 	})
+
 	t.Run("delete", func(t *testing.T) {
 		events, err := storage.Read(ctx, dateStart, domain.TakeAllNotification)
 		if err != nil {
@@ -104,5 +113,4 @@ func TestStorage(t *testing.T) {
 			t.Errorf("operation delete was bad")
 		}
 	})
-
 }

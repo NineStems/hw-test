@@ -17,7 +17,7 @@ const (
 	actionDelete = "DELETE"
 	actionRead   = "READ"
 
-	ctxEventId   = "event-id"
+	ctxEventID   = "event-id"
 	ctxDateRead  = "date-read"
 	ctxCondition = "condition-read"
 	ctxDateStart = "date-start"
@@ -50,7 +50,7 @@ func (s *Storage) Create(ctx context.Context, event *domain.Event) (string, erro
 	if sEvent.DateEnd.IsZero() {
 		dateEnd = nil
 	}
-	s.log.Debugw(actionCreate, ctxEventId, id, ctxDateStart, sEvent.Date, ctxDateEnd, dateEnd)
+	s.log.Debugw(actionCreate, ctxEventID, id, ctxDateStart, sEvent.Date, ctxDateEnd, dateEnd)
 
 	s.data[sEvent.ID] = *sEvent
 	return sEvent.ID, nil
@@ -69,7 +69,7 @@ func (s *Storage) Update(ctx context.Context, event *domain.Event) error {
 	if event.DateEnd.IsZero() {
 		dateEnd = nil
 	}
-	s.log.Debugw(actionUpdate, ctxEventId, event.ID, ctxDateStart, event.Date, ctxDateEnd, dateEnd)
+	s.log.Debugw(actionUpdate, ctxEventID, event.ID, ctxDateStart, event.Date, ctxDateEnd, dateEnd)
 	s.data[event.ID] = *eventFromDomain(event)
 	return nil
 }
@@ -78,7 +78,7 @@ func (s *Storage) Delete(ctx context.Context, id string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	delete(s.data, id)
-	s.log.Debugw(actionDelete, ctxEventId, id)
+	s.log.Debugw(actionDelete, ctxEventID, id)
 	return nil
 }
 

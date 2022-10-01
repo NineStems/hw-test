@@ -11,6 +11,6 @@ type Event struct {
 	Title            string        // заголовок, короткий текст
 	Date             time.Time     // дата и время события
 	DateEnd          time.Time     // Дата и время окончания)
-	DateNotification time.Duration //За сколько времени высылать уведомление, опционально
+	DateNotification time.Duration // за сколько времени высылать уведомление, опционально
 	Description      string        // Описание события, длинный текст, опционально
 }
