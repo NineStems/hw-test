@@ -3,16 +3,17 @@ package main
 import (
 	"context"
 	"flag"
+	"math/rand"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/app"
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/config"
+	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/interactor/app"
 	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/pkg/logger"
+	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/repository/storage/memory"
 	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/server/http"
-	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
 )
 
 var configFile string
@@ -30,18 +31,21 @@ func main() {
 	}
 
 	cfg := config.New()
-	err := cfg.Apply("config/config.yaml") // todo позже использовать configFile
+	err := cfg.Apply("configs/config.yaml") // todo позже использовать configFile
 	if err != nil {
-
+		panic(err)
 	}
 
 	log := logger.Console(cfg.Logger.Path, cfg.Logger.Level)
 	sugarLog := logger.InitSugarZapLogger(log)
 
-	storage := memorystorage.New()
-	calendar := app.New(log, storage)
+	rnd := rand.New(rand.NewSource(time.Now().Unix()))
+	rnd.Int()
+	storage := memorystorage.New(sugarLog)
 
-	server := internalhttp.NewServer(sugarLog, calendar)
+	calendar := app.New(sugarLog, storage)
+
+	server := internalhttp.NewServer(sugarLog, calendar, cfg)
 
 	ctx, cancel := signal.NotifyContext(context.Background(),
 		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
@@ -54,14 +58,14 @@ func main() {
 		defer cancel()
 
 		if err := server.Stop(ctx); err != nil {
-			log.Error("failed to stop http server: " + err.Error())
+			sugarLog.Error("failed to stop http server: " + err.Error())
 		}
 	}()
 
 	log.Info("calendar is running...")
 
 	if err := server.Start(ctx); err != nil {
-		log.Error("failed to start http server: " + err.Error())
+		sugarLog.Error("failed to start http server: " + err.Error())
 		cancel()
 		os.Exit(1) //nolint:gocritic
 	}

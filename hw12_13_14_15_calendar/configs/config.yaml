@@ -10,5 +10,6 @@ server:
 
 # Данные базы данных
 database:
+  source: "postgres"
   user: "postgres"
   pass: "password"

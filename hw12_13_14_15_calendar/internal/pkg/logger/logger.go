@@ -131,10 +131,8 @@ func (l *Logger) WithFields(fields map[string]interface{}) *Logger {
 	for k, v := range fields {
 		if i == 0 {
 			clog = l.WithField(k, v)
-		} else {
-			if clog != nil {
-				clog = clog.WithField(k, v)
-			}
+		} else if clog != nil {
+			clog = clog.WithField(k, v)
 		}
 		i++
 	}
