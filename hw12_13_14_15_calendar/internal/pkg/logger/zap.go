@@ -5,7 +5,7 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"gopkg.in/natefinch/lumberjack.v2"
+	ljack "gopkg.in/natefinch/lumberjack.v2"
 )
 
 func Console(fileName string, level string) *zap.Logger {
@@ -34,7 +34,7 @@ func newCore(fileName string, level string) zapcore.Core {
 	})
 
 	consoleDebugging := zapcore.Lock(os.Stdout)
-	fileWriter := zapcore.AddSync(&lumberjack.Logger{
+	fileWriter := zapcore.AddSync(&ljack.Logger{
 		Filename:   fileName,
 		MaxSize:    50, // megabytes
 		MaxBackups: 3,

@@ -212,3 +212,9 @@
 {"level":"INFO","ts":"2022-10-02T20:47:55.702+0300","msg":"web server stopped"}
 {"level":"ERROR","ts":"2022-10-02T20:47:55.702+0300","msg":"context canceled"}
 {"level":"DEBUG","ts":"2022-10-02T20:47:55.702+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:52:22.736+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:52:22.736+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:52:23.373+0300","msg":"web server stopped"}
+{"level":"INFO","ts":"2022-10-02T20:52:23.373+0300","msg":"web server exited properly"}
+{"level":"ERROR","ts":"2022-10-02T20:52:23.373+0300","msg":"http: Server closed"}
+{"level":"DEBUG","ts":"2022-10-02T20:52:23.373+0300","msg":"close connection pg db to url='localhost:5432'"}
