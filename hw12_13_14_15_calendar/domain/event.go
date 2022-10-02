@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/pkg/util"
+	"github.com/calendar/hw12_13_14_15_calendar/internal/pkg/util"
 )
 
 const (
@@ -19,17 +19,18 @@ const (
 var (
 	ErrNotDefinedPeriod = errors.New("not defined period for getting notifications")
 	ErrDateBusy         = errors.New("selected date already busy")
+	ErrNotFound         = errors.New("notification not found")
 )
 
 // Event календарное событие.
 type Event struct {
-	ID               string        // уникальный идентификатор события (можно воспользоваться UUID);
-	OwnerID          int           // ИД пользователя, владельца события
-	Title            string        // заголовок, короткий текст
-	Date             time.Time     // дата и время события
-	DateEnd          time.Time     // дата и время окончания
-	DateNotification time.Duration // за сколько времени высылать уведомление, опционально
-	Description      string        // Описание события, длинный текст, опционально
+	ID               string    // уникальный идентификатор события (можно воспользоваться UUID);
+	OwnerID          int       // ИД пользователя, владельца события
+	Title            string    // заголовок, короткий текст
+	Date             time.Time // дата и время события
+	DateEnd          time.Time // дата и время окончания
+	DateNotification time.Time // за сколько времени высылать уведомление, записываем время, с которого слать уведомл.
+	Description      string    // Описание события, длинный текст
 }
 
 // GetNotification возвращает уведомление на основании события.

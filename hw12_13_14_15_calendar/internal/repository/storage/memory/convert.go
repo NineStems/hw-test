@@ -1,7 +1,7 @@
 package memorystorage
 
 import (
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/domain"
+	"github.com/calendar/hw12_13_14_15_calendar/domain"
 )
 
 // eventFromDomain конвертирует доменный тип в тип репозитория.

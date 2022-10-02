@@ -1,7 +1,7 @@
 # Конфигурация логгера
 logger:
   path: "log/logs.log"
-  level: "DEBUG"
+  level: "debug"
 
 # Конфигурация сервера
 server:
@@ -13,3 +13,7 @@ database:
   source: "postgres"
   user: "postgres"
   pass: "password"
+  host: "localhost"
+  port: 5432
+  database: "postgres"
+  timeout: "60s"

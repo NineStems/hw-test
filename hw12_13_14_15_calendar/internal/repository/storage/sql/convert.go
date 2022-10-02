@@ -1,7 +1,7 @@
 package sqlstorage
 
 import (
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/domain"
+	"github.com/calendar/hw12_13_14_15_calendar/domain"
 )
 
 // eventFromDomain конвертирует доменный тип в тип репозитория.
@@ -12,8 +12,8 @@ func eventFromDomain(in *domain.Event) *Event {
 		Title:            in.Title,
 		Date:             in.Date,
 		DateEnd:          in.DateEnd,
-		DateNotification: in.DateNotification,
-		Description:      in.Description,
+		DateNotification: TimeToNull(in.DateNotification),
+		Description:      StringToNull(in.Description),
 	}
 }
 
@@ -25,8 +25,8 @@ func eventToDomain(in *Event) *domain.Event {
 		Title:            in.Title,
 		Date:             in.Date,
 		DateEnd:          in.DateEnd,
-		DateNotification: in.DateNotification,
-		Description:      in.Description,
+		DateNotification: in.DateNotification.Time,
+		Description:      in.Description.String,
 	}
 }
 
