@@ -79,3 +79,136 @@
 {"level":"DEBUG","ts":"2022-10-02T18:44:57.828+0300","msg":"connect pg db to url='localhost:5432'"}
 {"level":"DEBUG","ts":"2022-10-02T18:45:04.077+0300","msg":"query","action-id":null,"sql":"SELECT id, ownerid, title, date, dateend, datenotification, description FROM otus.notification","args":null}
 {"level":"DEBUG","ts":"2022-10-02T18:45:07.787+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T19:58:49.621+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T19:58:54.922+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T19:58:55.615+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:00:00.871+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:00:00.871+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:00:00.872+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:00:04.764+0300","msg":"web server stopped"}
+{"level":"INFO","ts":"2022-10-02T20:00:04.764+0300","msg":"web server exited properly"}
+{"level":"ERROR","ts":"2022-10-02T20:00:04.764+0300","msg":"http: Server closed"}
+{"level":"DEBUG","ts":"2022-10-02T20:00:04.764+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:00:21.513+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:00:21.513+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:00:21.514+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:00:40.764+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:00:40.765+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:00:40.765+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:01:08.611+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:01:08.611+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:01:21.143+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:02:15.467+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:02:15.467+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:02:18.246+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:08:41.714+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:08:41.714+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:08:41.714+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:08:45.887+0300","msg":"ip[2022-10-02 20:08:45.887696994 +0300 MSK m=+4.182409809]GET/9999Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"}
+{"level":"DEBUG","ts":"2022-10-02T20:08:46.109+0300","msg":"ip[2022-10-02 20:08:46.10924132 +0300 MSK m=+4.403954074]GET/favicon.ico9999Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"}
+{"level":"DEBUG","ts":"2022-10-02T20:09:12.569+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:09:12.569+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:09:12.569+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:09:52.515+0300","msg":"ip[2022-10-02T20:09:52+03:00]GET/9999PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:16:54.138+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:16:54.138+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:16:54.138+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:16:54.720+0300","msg":"ip[2022-10-02T20:16:54+03:00]GET/9999PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:18:10.454+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:18:10.455+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:18:10.455+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:18:12.227+0300","msg":"ip [2022-10-02T20:18:12+03:00] GET / 9999 PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:19:03.445+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:19:03.446+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:19:03.447+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:19:06.189+0300","msg":"127.0.0.1:37474 [2022-10-02T20:19:06+03:00] GET / 9999 PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:24:42.741+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:24:42.741+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:24:42.741+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:25:04.768+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:25:04.768+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:25:04.768+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:25:08.499+0300","msg":"[TWO] 127.0.0.1:40896 [2022-10-02T20:25:08+03:00] GET / {0 62135596801 11191328} PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:25:08.500+0300","msg":"[ONE] 127.0.0.1:40896 [2022-10-02T20:25:08+03:00] GET / {0 62135596801 11191328} PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:25:34.162+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:25:34.162+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:25:34.162+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:25:35.743+0300","msg":"[TWO] 127.0.0.1:40986 [2022-10-02T20:25:35+03:00] GET / 1 PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:25:35.743+0300","msg":"[ONE] 127.0.0.1:40986 [2022-10-02T20:25:35+03:00] GET / 1 PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:26:03.939+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:26:03.939+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:26:03.939+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:26:13.202+0300","msg":"[TWO] 127.0.0.1:35296 [2022-10-02T20:26:13+03:00] GET / 3000000 PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:26:13.203+0300","msg":"[ONE] 127.0.0.1:35296 [2022-10-02T20:26:13+03:00] GET / 3000000 PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:26:47.287+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:26:47.287+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:26:47.288+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:27:00.665+0300","msg":"127.0.0.1:56692 [2022-10-02T20:27:00+03:00] GET / 3000000 PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:27:20.753+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:27:20.754+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:27:20.754+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:27:26.174+0300","msg":"127.0.0.1:60516 [2022-10-02T20:27:26+03:00] GET / 3s PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:27:43.882+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:27:43.882+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:27:43.882+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:27:45.771+0300","msg":"127.0.0.1:45466 [2022-10-02T20:27:45+03:00] GET / 0s PostmanRuntime/7.29.2"}
+{"level":"DEBUG","ts":"2022-10-02T20:28:03.627+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:28:03.627+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:28:03.627+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:28:05.644+0300","msg":"127.0.0.1:57892 [2022-10-02T20:28:05+03:00] GET / 0ms PostmanRuntime/7.29.2"}
+{"level":"INFO","ts":"2022-10-02T20:28:16.231+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:28:16.232+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:28:16.232+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:31:57.274+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:31:57.274+0300","msg":"calendar is running..."}
+{"level":"INFO","ts":"2022-10-02T20:31:57.274+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:31:59.405+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:31:59.406+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:31:59.406+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:32:19.502+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:32:19.503+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:32:22.195+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:32:22.195+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:32:22.195+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:32:53.999+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:32:54.000+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:32:57.319+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:32:57.320+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:32:57.320+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:34:14.121+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:34:14.121+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"DEBUG","ts":"2022-10-02T20:34:32.032+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:34:32.032+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:34:33.885+0300","msg":"web server stopped"}
+{"level":"INFO","ts":"2022-10-02T20:34:33.886+0300","msg":"web server exited properly"}
+{"level":"ERROR","ts":"2022-10-02T20:34:33.886+0300","msg":"http: Server closed"}
+{"level":"DEBUG","ts":"2022-10-02T20:34:33.886+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:42:52.182+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:42:52.182+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:42:54.306+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:42:54.307+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:42:54.307+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:43:08.550+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:43:08.550+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:43:16.291+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:43:27.354+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:43:27.933+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:45:04.711+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:45:04.711+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:45:08.098+0300","msg":"web server stopped"}
+{"level":"INFO","ts":"2022-10-02T20:45:08.098+0300","msg":"web server exited properly"}
+{"level":"ERROR","ts":"2022-10-02T20:45:08.098+0300","msg":"http: Server closed"}
+{"level":"DEBUG","ts":"2022-10-02T20:45:08.098+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:45:25.406+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:45:25.406+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:45:28.777+0300","msg":"web server stopped"}
+{"level":"DEBUG","ts":"2022-10-02T20:45:33.291+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:45:43.140+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:45:43.140+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:45:48.180+0300","msg":"web server stopped"}
+{"level":"DEBUG","ts":"2022-10-02T20:45:53.458+0300","msg":"close connection pg db to url='localhost:5432'"}
+{"level":"DEBUG","ts":"2022-10-02T20:47:54.549+0300","msg":"connect pg db to url='localhost:5432'"}
+{"level":"INFO","ts":"2022-10-02T20:47:54.549+0300","msg":"web server started on 127.0.0.1:8080"}
+{"level":"INFO","ts":"2022-10-02T20:47:55.702+0300","msg":"web server stopped"}
+{"level":"ERROR","ts":"2022-10-02T20:47:55.702+0300","msg":"context canceled"}
+{"level":"DEBUG","ts":"2022-10-02T20:47:55.702+0300","msg":"close connection pg db to url='localhost:5432'"}

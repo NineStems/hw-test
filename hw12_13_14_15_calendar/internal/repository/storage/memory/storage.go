@@ -40,7 +40,7 @@ func (s *Storage) Create(ctx context.Context, event *domain.Event) (string, erro
 	}
 	event.ID = id
 
-	err = s.checkTimeExist(ctx, event)
+	err = s.checkTimeExist(event)
 	if err != nil {
 		return "", errors.Wrap(err, "s.checkTimeExist")
 	}
@@ -60,8 +60,7 @@ func (s *Storage) Update(ctx context.Context, event *domain.Event) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	err := s.checkTimeExist(ctx, event)
-	if err != nil {
+	if err := s.checkTimeExist(event); err != nil {
 		return errors.Wrap(err, "s.checkTimeExist")
 	}
 
@@ -100,7 +99,7 @@ func (s *Storage) Read(ctx context.Context, date time.Time, condition int) ([]do
 		return nil, domain.ErrNotDefinedPeriod
 	}
 
-	events, err := s.read(ctx, start, end)
+	events, err := s.read(start, end)
 	if err != nil {
 		return nil, errors.Wrap(err, "s.read")
 	}

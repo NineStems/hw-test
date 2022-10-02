@@ -148,6 +148,11 @@ func (s *Storage) Read(ctx context.Context, date time.Time, condition int) ([]do
 		return nil, errors.Wrap(err, "s.db.Query")
 	}
 	defer cancel()
+	defer rows.Close()
+
+	if err = rows.Err(); err != nil {
+		return nil, errors.Wrap(err, "rows.Err")
+	}
 
 	var events []Event
 	for rows.Next() {

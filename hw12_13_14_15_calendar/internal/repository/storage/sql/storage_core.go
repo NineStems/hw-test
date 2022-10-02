@@ -15,6 +15,11 @@ func (s *Storage) checkExists(ctx context.Context, id string) error {
 		return errors.Wrap(err, "s.db.Query")
 	}
 	defer cancel()
+	defer rows.Close()
+
+	if err = rows.Err(); err != nil {
+		return errors.Wrap(err, "rows.Err")
+	}
 
 	if !rows.Next() {
 		return domain.ErrNotFound
@@ -26,7 +31,7 @@ func (s *Storage) checkDateExists(ctx context.Context, dateStart, dateEnd time.T
 	sql := `SELECT id FROM otus.notification WHERE date >= $1`
 	args := []interface{}{dateStart}
 	if !dateEnd.IsZero() {
-		sql = sql + " AND dateend <= $2"
+		sql += " AND dateend <= $2"
 		args = append(args, dateEnd)
 	}
 
@@ -35,6 +40,11 @@ func (s *Storage) checkDateExists(ctx context.Context, dateStart, dateEnd time.T
 		return errors.Wrap(err, "s.db.Query")
 	}
 	defer cancel()
+	defer rows.Close()
+
+	if err = rows.Err(); err != nil {
+		return errors.Wrap(err, "rows.Err")
+	}
 
 	if rows.Next() {
 		return domain.ErrDateBusy

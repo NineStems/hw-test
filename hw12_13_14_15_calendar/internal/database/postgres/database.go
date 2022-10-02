@@ -5,8 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
+	"github.com/jmoiron/sqlx" //nolint:gci
 
 	"github.com/calendar/hw12_13_14_15_calendar/common"
 	"github.com/calendar/hw12_13_14_15_calendar/internal/config"
@@ -14,7 +13,7 @@ import (
 )
 
 const (
-	ctxSql  = "sql"
+	ctxSQL  = "sql"
 	ctxArgs = "args"
 
 	ctxQuery    = "query"
@@ -83,9 +82,8 @@ func (p *DB) Exec(ctx context.Context, sql string, args ...interface{}) error {
 		return errors.Wrap(err, "ExecContext")
 	}
 	return nil
-
 }
 
 func (p DB) log(ctx context.Context, action, sql string, args ...interface{}) {
-	p.logger.Debugw(action, common.CtxActionID, ctx.Value(common.CtxActionID), ctxSql, clearSql(sql), ctxArgs, args)
+	p.logger.Debugw(action, common.CtxActionID, ctx.Value(common.CtxActionID), ctxSQL, clearSQL(sql), ctxArgs, args)
 }

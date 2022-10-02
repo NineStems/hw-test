@@ -4,10 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"os"
 	"os/signal"
 	"syscall"
-	"time"
+
+	_ "github.com/lib/pq" //nolint: gci
 
 	"github.com/calendar/hw12_13_14_15_calendar/internal/config"
 	"github.com/calendar/hw12_13_14_15_calendar/internal/database/postgres"
@@ -41,8 +41,7 @@ func main() {
 	log := logger.Console(cfg.Logger.Path, cfg.Logger.Level)
 	sugarLog := logger.InitSugarZapLogger(log)
 
-	ctx, cancel := signal.NotifyContext(context.Background(),
-		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	defer cancel()
 
 	// INFO: не самый лучший подход, но из-за разницы в хранилищах сходу не придумал, как это обернуть
@@ -67,22 +66,7 @@ func main() {
 
 	server := internalhttp.NewServer(sugarLog, calendar, cfg)
 
-	go func() {
-		<-ctx.Done()
-
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-		defer cancel()
-
-		if err := server.Stop(ctx); err != nil {
-			sugarLog.Error("failed to stop http server: " + err.Error())
-		}
-	}()
-
-	log.Info("calendar is running...")
-
-	if err := server.Start(ctx); err != nil {
-		sugarLog.Error("failed to start http server: " + err.Error())
-		cancel()
-		os.Exit(1) //nolint:gocritic
+	if err = server.Start(ctx); err != nil {
+		sugarLog.Error(err)
 	}
 }

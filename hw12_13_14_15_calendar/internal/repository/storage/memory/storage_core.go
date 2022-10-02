@@ -1,7 +1,6 @@
 package memorystorage
 
 import (
-	"context"
 	"time"
 
 	"github.com/calendar/hw12_13_14_15_calendar/domain"
@@ -9,7 +8,7 @@ import (
 )
 
 // checkTimeExist проверяет, что событие можно создать на указанном времени.
-func (s *Storage) checkTimeExist(ctx context.Context, event *domain.Event) error {
+func (s *Storage) checkTimeExist(event *domain.Event) error {
 	events := make([]Event, 0, len(s.data))
 	for _, value := range s.data {
 		if event.OwnerID == value.OwnerID {
@@ -27,7 +26,7 @@ func (s *Storage) checkTimeExist(ctx context.Context, event *domain.Event) error
 }
 
 // read вычитывает события на основании временных ограничений.
-func (s *Storage) read(ctx context.Context, start, end time.Time) ([]Event, error) {
+func (s *Storage) read(start, end time.Time) ([]Event, error) { //nolint:unparam
 	list := make([]Event, 0, len(s.data))
 	for _, value := range s.data {
 		if (start.IsZero() && end.IsZero()) || util.CompareDateRange(value.Date, value.DateEnd, start, end) {

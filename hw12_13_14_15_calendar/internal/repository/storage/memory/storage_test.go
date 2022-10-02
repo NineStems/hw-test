@@ -32,7 +32,7 @@ func TestStorage(t *testing.T) { //nolint: gocognit
 			Title:            "some title",
 			Date:             dateStart,
 			DateEnd:          dateEnd,
-			DateNotification: 0,
+			DateNotification: time.Time{},
 			Description:      "some description",
 		}
 		id, err := storage.Create(ctx, &event)

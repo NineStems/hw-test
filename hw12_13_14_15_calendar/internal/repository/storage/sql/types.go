@@ -11,7 +11,7 @@ type Event struct {
 	OwnerID          int            // ИД пользователя, владельца события
 	Title            string         // заголовок, короткий текст
 	Date             time.Time      // дата и время события
-	DateEnd          time.Time      // Дата и время окончания)
-	DateNotification sql.NullTime   //За сколько времени высылать уведомление, опционально
+	DateEnd          time.Time      // дата и время окончания)
+	DateNotification sql.NullTime   // за сколько времени высылать уведомление, опционально
 	Description      sql.NullString // Описание события, длинный текст, опционально
 }
