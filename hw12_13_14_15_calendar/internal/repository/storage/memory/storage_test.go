@@ -115,6 +115,7 @@ func TestStorage(t *testing.T) { //nolint: gocognit
 		}
 	})
 }
+
 func TestGoroutineStorage(t *testing.T) {
 	log := logmock.MockLogger{}
 	ctx := context.Background()
@@ -154,7 +155,7 @@ func TestGoroutineStorage(t *testing.T) {
 	for i := 0; i < 1000; i++ {
 		wg.Add(1)
 		go func(i int, w *sync.WaitGroup, e domain.Event) {
-			defer wg.Done()
+			defer w.Done()
 			e.Date = e.Date.AddDate(i+1, 0, 0)
 			e.DateEnd = e.DateEnd.AddDate(i+1, 0, 0)
 			err = storage.Update(ctx, &e)
