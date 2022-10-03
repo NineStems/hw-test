@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/yaml.v2" // nolint:gci
+	"gopkg.in/yaml.v2" // nolint
 
 	"github.com/calendar/hw12_13_14_15_calendar/pkg/errors"
 )
@@ -47,7 +47,7 @@ func (c *Config) Apply(path string) error {
 	}
 	defer f.Close()
 
-	decoder := yaml.NewDecoder(f)
+	decoder := yaml.NewDecoder(f) // nolint
 	if err = decoder.Decode(c); err != nil {
 		return errors.Wrap(err, "decoder.Decode")
 	}
