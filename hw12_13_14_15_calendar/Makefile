@@ -31,4 +31,16 @@ install-lint-deps:
 lint: install-lint-deps
 	golangci-lint run ./...
 
+goose-get:
+	go install github.com/pressly/goose/v3/cmd/goose@latest
+
+goose-up:
+	cd migrations
+	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" up
+	cd ..
+goose-down:
+	cd migrations
+	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" down
+	cd ..
+
 .PHONY: build run build-img run-img version test lint
