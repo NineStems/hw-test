@@ -2,7 +2,6 @@ package memorystorage
 
 import (
 	"context"
-	"sync"
 	"testing"
 	"time"
 
@@ -114,55 +113,4 @@ func TestStorage(t *testing.T) { //nolint: gocognit
 			t.Errorf("operation delete was bad")
 		}
 	})
-}
-
-func TestGoroutineStorage(t *testing.T) {
-	log := logmock.MockLogger{}
-	ctx := context.Background()
-	storage := New(log)
-
-	dateStart := time.Date(
-		2022,
-		06, //nolint: gofumpt
-		28,
-		20,
-		30,
-		50,
-		0,
-		time.UTC,
-	)
-	dateEnd := dateStart.Add(time.Hour * 1)
-
-	event := domain.Event{
-		OwnerID:          10,
-		Title:            "some title",
-		Date:             dateStart,
-		DateEnd:          dateEnd,
-		DateNotification: time.Time{},
-		Description:      "some description",
-	}
-	id, err := storage.Create(ctx, &event)
-	if err != nil {
-		t.Error(err)
-	}
-	if len(id) == 0 {
-		t.Errorf("created id is empty")
-	}
-
-	event.ID = id
-
-	wg := sync.WaitGroup{}
-	for i := 0; i < 1000; i++ {
-		wg.Add(1)
-		go func(i int, w *sync.WaitGroup, e domain.Event) {
-			defer w.Done()
-			e.Date = e.Date.AddDate(i+1, 0, 0)
-			e.DateEnd = e.DateEnd.AddDate(i+1, 0, 0)
-			err = storage.Update(ctx, &e)
-			if err != nil {
-				t.Errorf("%d err=%v", i, err.Error())
-			}
-		}(i, &wg, event)
-	}
-	wg.Wait()
 }
