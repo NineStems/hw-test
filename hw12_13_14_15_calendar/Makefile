@@ -35,12 +35,12 @@ goose-get:
 	go install github.com/pressly/goose/v3/cmd/goose@latest
 
 goose-up:
-	cd migrations
-	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" up
-	cd ..
+	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" up
+
 goose-down:
-	cd migrations
-	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" down
-	cd ..
+	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" down
+
+goose-version:
+	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" version
 
 .PHONY: build run build-img run-img version test lint
