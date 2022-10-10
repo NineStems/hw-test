@@ -35,12 +35,25 @@ goose-get:
 	go install github.com/pressly/goose/v3/cmd/goose@latest
 
 goose-up:
-	cd migrations
-	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" up
-	cd ..
+	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" up
 goose-down:
-	cd migrations
-	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" down
-	cd ..
+	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" down
+goose-version:
+	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" version
+update-generate-tools:
+	go install \
+        github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+        github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+        google.golang.org/protobuf/cmd/protoc-gen-go \
+        google.golang.org/grpc/cmd/protoc-gen-go-grpc
+generate:
+	protoc -I . \
+			--go_out ./api/calendar \
+			--go-grpc_out ./api/calendar \
+			--grpc-gateway_out ./api/calendar \
+      		--grpc-gateway_opt logtostderr=true \
+        	--grpc-gateway_opt generate_unbound_methods=true \
+			./proto/*.proto
+
 
 .PHONY: build run build-img run-img version test lint

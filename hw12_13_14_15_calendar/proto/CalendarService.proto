@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package event;
+option go_package = "./;calendar";
+
+service Calendar{
+  rpc CreateEvent(CreateRequest) returns(CreateResponse);
+  rpc UpdateEvent(UpdateRequest) returns(UpdateResponse);
+  rpc DeleteEvent(DeleteRequest) returns(DeleteResponse);
+  rpc ReadEvents(ReadRequest) returns(ReadResult);
+}
+
+message CreateRequest{
+  Event event = 1;
+}
+
+message CreateResponse{
+  string id = 1;
+}
+
+message UpdateRequest{
+  Event event = 1;
+}
+
+message UpdateResponse{}
+
+message DeleteRequest{
+  string id = 1;
+}
+
+message DeleteResponse{}
+
+message ReadRequest {
+  google.protobuf.Timestamp date = 1;
+  int32 condition = 2;
+}
+
+message ReadResult {
+  repeated Event events = 1;
+}
+
+message Event {
+  string id = 1;
+  int32 owner_id = 2;
+  string title = 3;
+  google.protobuf.Timestamp date = 4;
+  google.protobuf.Timestamp date_end = 5;
+  google.protobuf.Timestamp date_notification = 6;
+  string description = 7;
+}
+
+message Notification {
+  string id = 1;
+  int32 owner_id = 2;
+  string title = 3;
+  google.protobuf.Timestamp date = 4;
+}

@@ -14,7 +14,7 @@ import (
 	"github.com/calendar/hw12_13_14_15_calendar/internal/config"
 )
 
-type Server struct { // TODO
+type Server struct {
 	cfg     *config.Config
 	log     common.Logger
 	app     Application
@@ -40,7 +40,7 @@ func NewServer(log common.Logger, app Application, cfg *config.Config) *Server {
 func (s *Server) Start(ctx context.Context) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-	s.CreateMux()
+	s.createMux()
 
 	var err error
 	s.ln, err = net.Listen("tcp4", s.cfg.Server.Host+":"+s.cfg.Server.Port)
