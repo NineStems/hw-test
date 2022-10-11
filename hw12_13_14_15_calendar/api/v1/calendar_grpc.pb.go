@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.6.1
-// source: proto/CalendarService.proto
+// source: proto/v1/calendar.proto
 
-package calendar
+package v1
 
 import (
 	context "context"
@@ -38,7 +38,7 @@ func NewCalendarClient(cc grpc.ClientConnInterface) CalendarClient {
 
 func (c *calendarClient) CreateEvent(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error) {
 	out := new(CreateResponse)
-	err := c.cc.Invoke(ctx, "/event.Calendar/CreateEvent", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.Calendar/CreateEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *calendarClient) CreateEvent(ctx context.Context, in *CreateRequest, opt
 
 func (c *calendarClient) UpdateEvent(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	out := new(UpdateResponse)
-	err := c.cc.Invoke(ctx, "/event.Calendar/UpdateEvent", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.Calendar/UpdateEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (c *calendarClient) UpdateEvent(ctx context.Context, in *UpdateRequest, opt
 
 func (c *calendarClient) DeleteEvent(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
 	out := new(DeleteResponse)
-	err := c.cc.Invoke(ctx, "/event.Calendar/DeleteEvent", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.Calendar/DeleteEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *calendarClient) DeleteEvent(ctx context.Context, in *DeleteRequest, opt
 
 func (c *calendarClient) ReadEvents(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResult, error) {
 	out := new(ReadResult)
-	err := c.cc.Invoke(ctx, "/event.Calendar/ReadEvents", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v1.Calendar/ReadEvents", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func _Calendar_CreateEvent_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/event.Calendar/CreateEvent",
+		FullMethod: "/v1.Calendar/CreateEvent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalendarServer).CreateEvent(ctx, req.(*CreateRequest))
@@ -140,7 +140,7 @@ func _Calendar_UpdateEvent_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/event.Calendar/UpdateEvent",
+		FullMethod: "/v1.Calendar/UpdateEvent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalendarServer).UpdateEvent(ctx, req.(*UpdateRequest))
@@ -158,7 +158,7 @@ func _Calendar_DeleteEvent_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/event.Calendar/DeleteEvent",
+		FullMethod: "/v1.Calendar/DeleteEvent",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalendarServer).DeleteEvent(ctx, req.(*DeleteRequest))
@@ -176,7 +176,7 @@ func _Calendar_ReadEvents_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/event.Calendar/ReadEvents",
+		FullMethod: "/v1.Calendar/ReadEvents",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CalendarServer).ReadEvents(ctx, req.(*ReadRequest))
@@ -188,7 +188,7 @@ func _Calendar_ReadEvents_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Calendar_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "event.Calendar",
+	ServiceName: "v1.Calendar",
 	HandlerType: (*CalendarServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -209,5 +209,5 @@ var Calendar_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/CalendarService.proto",
+	Metadata: "proto/v1/calendar.proto",
 }
