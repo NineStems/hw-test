@@ -3,15 +3,19 @@ package main
 import (
 	"context"
 	"flag"
-	"os"
+	"fmt"
 	"os/signal"
 	"syscall"
-	"time"
 
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/app"
-	"github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/logger"
-	internalhttp "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/server/http"
-	memorystorage "github.com/fixme_my_friend/hw12_13_14_15_calendar/internal/storage/memory"
+	_ "github.com/lib/pq" //nolint: gci
+
+	"github.com/calendar/hw12_13_14_15_calendar/internal/config"
+	"github.com/calendar/hw12_13_14_15_calendar/internal/database/postgres"
+	"github.com/calendar/hw12_13_14_15_calendar/internal/interactor/app"
+	"github.com/calendar/hw12_13_14_15_calendar/internal/pkg/logger"
+	memorystorage "github.com/calendar/hw12_13_14_15_calendar/internal/repository/storage/memory"
+	sqlstorage "github.com/calendar/hw12_13_14_15_calendar/internal/repository/storage/sql"
+	internalhttp "github.com/calendar/hw12_13_14_15_calendar/internal/server/http"
 )
 
 var configFile string
@@ -28,34 +32,41 @@ func main() {
 		return
 	}
 
-	config := NewConfig()
-	logg := logger.New(config.Logger.Level)
+	cfg := config.New()
+	err := cfg.Apply("configs/config.yaml")
+	if err != nil {
+		panic(err)
+	}
 
-	storage := memorystorage.New()
-	calendar := app.New(logg, storage)
+	log := logger.Console(cfg.Logger.Path, cfg.Logger.Level)
+	sugarLog := logger.InitSugarZapLogger(log)
 
-	server := internalhttp.NewServer(logg, calendar)
-
-	ctx, cancel := signal.NotifyContext(context.Background(),
-		syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	defer cancel()
 
-	go func() {
-		<-ctx.Done()
-
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
-		defer cancel()
-
-		if err := server.Stop(ctx); err != nil {
-			logg.Error("failed to stop http server: " + err.Error())
+	// INFO: не самый лучший подход, но из-за разницы в хранилищах сходу не придумал, как это обернуть
+	// Идея использовать методы Open/Close у репы решит проблему, но управлять конектом на этом слое - тоже не выход
+	var storage app.Storage
+	switch cfg.Database.Source {
+	case "postgres":
+		db := postgres.New(&cfg.Database, sugarLog)
+		err = db.Open(ctx)
+		if err != nil {
+			panic(err)
 		}
-	}()
+		defer db.Close()
+		storage = sqlstorage.New(db)
+	case "inmemory":
+		storage = memorystorage.New(sugarLog)
+	default:
+		panic(fmt.Sprintf("undefined database source=%v", cfg.Database.Source))
+	}
 
-	logg.Info("calendar is running...")
+	calendar := app.New(sugarLog, storage)
 
-	if err := server.Start(ctx); err != nil {
-		logg.Error("failed to start http server: " + err.Error())
-		cancel()
-		os.Exit(1) //nolint:gocritic
+	server := internalhttp.NewServer(sugarLog, calendar, cfg)
+
+	if err = server.Start(ctx); err != nil {
+		sugarLog.Error(err)
 	}
 }
