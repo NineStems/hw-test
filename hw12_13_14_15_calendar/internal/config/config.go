@@ -15,10 +15,20 @@ type Logger struct {
 	Level string `yaml:"level"`
 }
 
+type Grpc struct {
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
+}
+
+type Rest struct {
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
+}
+
 // Server конфигурация для HTTP сервера.
 type Server struct {
-	Port string `yaml:"port"`
-	Host string `yaml:"host"`
+	Grpc Grpc `yaml:"grpc"`
+	Rest Rest `yaml:"rest"`
 }
 
 // Database конфигурация для базы данных.

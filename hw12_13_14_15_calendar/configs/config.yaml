@@ -1,12 +1,16 @@
 # Конфигурация логгера
 logger:
-  path: "log/logs.log"
+  path: "logs/logs.log"
   level: "debug"
 
 # Конфигурация сервера
 server:
-  host: "localhost"
-  port: 8080
+  grpc:
+    host: "localhost"
+    port: 8080
+  rest:
+    host: "localhost"
+    port: 8080
 
 # Данные базы данных
 database:
