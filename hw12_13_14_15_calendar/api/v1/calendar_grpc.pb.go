@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.6.1
-// source: proto/v1/calendar.proto
+// source: proto/api/v1/calendar.proto
 
 package v1
 
@@ -22,9 +22,13 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CalendarClient interface {
+	// CreateEvent создаёт событие и возвращает ID.
 	CreateEvent(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
-	UpdateEvent(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
-	DeleteEvent(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	// UpdateEvent обновляет(перезаписывает) событие по ID и возвращает только ошибку при наоличии.
+	UpdateEvent(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Empty, error)
+	// DeleteEvent удаляет событие по ID и возвращает только ошибку при наличии.
+	DeleteEvent(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Empty, error)
+	// ReadEvents возвращает события на основании переданных параметров.
 	ReadEvents(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResult, error)
 }
 
@@ -45,8 +49,8 @@ func (c *calendarClient) CreateEvent(ctx context.Context, in *CreateRequest, opt
 	return out, nil
 }
 
-func (c *calendarClient) UpdateEvent(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
-	out := new(UpdateResponse)
+func (c *calendarClient) UpdateEvent(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/v1.Calendar/UpdateEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -54,8 +58,8 @@ func (c *calendarClient) UpdateEvent(ctx context.Context, in *UpdateRequest, opt
 	return out, nil
 }
 
-func (c *calendarClient) DeleteEvent(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error) {
-	out := new(DeleteResponse)
+func (c *calendarClient) DeleteEvent(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/v1.Calendar/DeleteEvent", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -76,9 +80,13 @@ func (c *calendarClient) ReadEvents(ctx context.Context, in *ReadRequest, opts .
 // All implementations must embed UnimplementedCalendarServer
 // for forward compatibility
 type CalendarServer interface {
+	// CreateEvent создаёт событие и возвращает ID.
 	CreateEvent(context.Context, *CreateRequest) (*CreateResponse, error)
-	UpdateEvent(context.Context, *UpdateRequest) (*UpdateResponse, error)
-	DeleteEvent(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	// UpdateEvent обновляет(перезаписывает) событие по ID и возвращает только ошибку при наоличии.
+	UpdateEvent(context.Context, *UpdateRequest) (*Empty, error)
+	// DeleteEvent удаляет событие по ID и возвращает только ошибку при наличии.
+	DeleteEvent(context.Context, *DeleteRequest) (*Empty, error)
+	// ReadEvents возвращает события на основании переданных параметров.
 	ReadEvents(context.Context, *ReadRequest) (*ReadResult, error)
 	mustEmbedUnimplementedCalendarServer()
 }
@@ -90,10 +98,10 @@ type UnimplementedCalendarServer struct {
 func (UnimplementedCalendarServer) CreateEvent(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateEvent not implemented")
 }
-func (UnimplementedCalendarServer) UpdateEvent(context.Context, *UpdateRequest) (*UpdateResponse, error) {
+func (UnimplementedCalendarServer) UpdateEvent(context.Context, *UpdateRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateEvent not implemented")
 }
-func (UnimplementedCalendarServer) DeleteEvent(context.Context, *DeleteRequest) (*DeleteResponse, error) {
+func (UnimplementedCalendarServer) DeleteEvent(context.Context, *DeleteRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEvent not implemented")
 }
 func (UnimplementedCalendarServer) ReadEvents(context.Context, *ReadRequest) (*ReadResult, error) {
@@ -209,5 +217,5 @@ var Calendar_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/v1/calendar.proto",
+	Metadata: "proto/api/v1/calendar.proto",
 }

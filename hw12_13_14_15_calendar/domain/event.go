@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/calendar/hw12_13_14_15_calendar/internal/pkg/util"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/pkg/util"
 )
 
 const (

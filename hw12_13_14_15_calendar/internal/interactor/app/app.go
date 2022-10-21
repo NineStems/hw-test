@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/calendar/hw12_13_14_15_calendar/common"
-	"github.com/calendar/hw12_13_14_15_calendar/domain"
-	"github.com/calendar/hw12_13_14_15_calendar/pkg/errors"
+	"github.com/hw-test/hw12_13_14_15_calendar/common"
+	"github.com/hw-test/hw12_13_14_15_calendar/domain"
+	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors"
 )
 
 type App struct {

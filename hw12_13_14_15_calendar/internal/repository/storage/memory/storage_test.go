@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	logmock "github.com/calendar/hw12_13_14_15_calendar/common/mocks"
-	"github.com/calendar/hw12_13_14_15_calendar/domain"
+	logmock "github.com/hw-test/hw12_13_14_15_calendar/common/mocks"
+	"github.com/hw-test/hw12_13_14_15_calendar/domain"
 )
 
 func TestStorage(t *testing.T) { //nolint: gocognit

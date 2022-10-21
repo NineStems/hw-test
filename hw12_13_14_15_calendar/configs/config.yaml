@@ -7,14 +7,14 @@ logger:
 server:
   grpc:
     host: "localhost"
-    port: 8080
+    port: 8081
   rest:
     host: "localhost"
     port: 8080
 
 # Данные базы данных
 database:
-  source: "postgres"
+  source: "inmemory"
   user: "postgres"
   pass: "password"
   host: "localhost"

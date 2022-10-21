@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+package v1;
+option go_package = "api/v1";
+
+import "google/protobuf/timestamp.proto";
+import "proto/google/api/annotations.proto";
+
+service Calendar{
+  // CreateEvent создаёт событие и возвращает ID.
+  rpc CreateEvent(CreateRequest) returns(CreateResponse){
+    option (google.api.http) = {
+      post: "/event/create"
+      body: "*"
+    };
+  };
+  // UpdateEvent обновляет(перезаписывает) событие по ID и возвращает только ошибку при наоличии.
+  rpc UpdateEvent(UpdateRequest) returns(Empty){
+    option (google.api.http) = {
+      put: "/event/{id}/update"
+      body: "*"
+    };
+  };
+  // DeleteEvent удаляет событие по ID и возвращает только ошибку при наличии.
+  rpc DeleteEvent(DeleteRequest) returns(Empty){
+    option (google.api.http) = {
+      delete: "/event/{id}/delete"
+    };
+  };
+  // ReadEvents возвращает события на основании переданных параметров.
+  rpc ReadEvents(ReadRequest) returns(ReadResult){
+    option (google.api.http) = {
+      post: "/event/read"
+      body: "*"
+    };
+  };
+}
+
+// Empty пустой объект не требующий данных в запросе/ответе.
+message Empty{}
+
+// CreateRequest информация о событии для его создания.
+message CreateRequest{
+  Event event = 1;
+}
+
+// CreateResponse результат создания события в системе с его ID.
+message CreateResponse{
+  string id = 1;
+  int32 owner_id = 2;
+  string title = 3;
+  google.protobuf.Timestamp date = 4;
+  google.protobuf.Timestamp date_end = 5;
+  google.protobuf.Timestamp date_notification = 6;
+  string description = 7;
+}
+
+// UpdateRequest запрос для обновления события.
+message UpdateRequest{
+  string id = 1;
+  int32 owner_id = 2;
+  string title = 3;
+  google.protobuf.Timestamp date = 4;
+  google.protobuf.Timestamp date_end = 5;
+  google.protobuf.Timestamp date_notification = 6;
+  string description = 7;
+}
+
+// DeleteRequest запрос для удаления события.
+message DeleteRequest{
+  string id = 1;
+}
+
+// ReadRequest запрос на получения событий по условию.
+message ReadRequest {
+  google.protobuf.Timestamp date = 1; // дата выборки событий
+  int32 condition = 2; // условие (0 - все, 1 - за день, 2 - за неделю, 3 - за месяц)
+}
+
+// ReadResult массив событий найденный на основании запроса.
+message ReadResult {
+  repeated Event events = 1;
+}
+
+// Event событие.
+message Event {
+  string id = 1;
+  int32 owner_id = 2;
+  string title = 3;
+  google.protobuf.Timestamp date = 4;
+  google.protobuf.Timestamp date_end = 5;
+  google.protobuf.Timestamp date_notification = 6;
+  string description = 7;
+}
+
+// Notification уведомление.
+message Notification {
+  string id = 1;
+  int32 owner_id = 2;
+  string title = 3;
+  google.protobuf.Timestamp date = 4;
+}

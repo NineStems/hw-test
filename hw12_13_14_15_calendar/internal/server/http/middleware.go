@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/calendar/hw12_13_14_15_calendar/common"
-	"github.com/calendar/hw12_13_14_15_calendar/internal/pkg/util"
+	"github.com/hw-test/hw12_13_14_15_calendar/common"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/pkg/util"
 )
 
-func (s *Server) loggingMiddleware(next http.Handler) http.Handler {
+func (s *ServerHTTP) loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if rvr := recover(); rvr != nil {

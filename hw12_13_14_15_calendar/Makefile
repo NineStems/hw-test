@@ -47,6 +47,6 @@ generate:
 			--grpc-gateway_out . \
       		--grpc-gateway_opt logtostderr=true \
         	--grpc-gateway_opt generate_unbound_methods=true \
-			proto/v1/*.proto
+			proto/api/v1/*.proto
 
 .PHONY: build run build-img run-img version test lint

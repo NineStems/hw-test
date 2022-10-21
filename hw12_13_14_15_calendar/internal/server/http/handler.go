@@ -4,8 +4,8 @@ import (
 	"net/http"
 )
 
-func (s *Server) createMux() {
+func (s *ServerHTTP) createMux() {
 	mux := http.NewServeMux()
-	mux.Handle("/", s.loggingMiddleware(s.defaultRoute()))
+	mux.Handle("/", s.defaultRoute())
 	s.handler = mux
 }

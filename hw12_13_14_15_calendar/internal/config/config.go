@@ -6,7 +6,7 @@ import (
 
 	"gopkg.in/yaml.v2" // nolint
 
-	"github.com/calendar/hw12_13_14_15_calendar/pkg/errors"
+	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors"
 )
 
 // Logger конфигурация для логгера.
@@ -28,7 +28,7 @@ type Rest struct {
 // Server конфигурация для HTTP сервера.
 type Server struct {
 	Grpc Grpc `yaml:"grpc"`
-	Rest Rest `yaml:"rest"`
+	Http Rest `yaml:"rest"`
 }
 
 // Database конфигурация для базы данных.

@@ -4,18 +4,19 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"os"
 	"os/signal"
 	"syscall"
 
 	_ "github.com/lib/pq" //nolint: gci
 
-	"github.com/calendar/hw12_13_14_15_calendar/internal/config"
-	"github.com/calendar/hw12_13_14_15_calendar/internal/database/postgres"
-	"github.com/calendar/hw12_13_14_15_calendar/internal/interactor/app"
-	"github.com/calendar/hw12_13_14_15_calendar/internal/pkg/logger"
-	memorystorage "github.com/calendar/hw12_13_14_15_calendar/internal/repository/storage/memory"
-	sqlstorage "github.com/calendar/hw12_13_14_15_calendar/internal/repository/storage/sql"
-	internalhttp "github.com/calendar/hw12_13_14_15_calendar/internal/server/http"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/config"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/database/postgres"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/interactor/app"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/pkg/logger"
+	memorystorage "github.com/hw-test/hw12_13_14_15_calendar/internal/repository/storage/memory"
+	sqlstorage "github.com/hw-test/hw12_13_14_15_calendar/internal/repository/storage/sql"
+	internalhttp "github.com/hw-test/hw12_13_14_15_calendar/internal/server/http"
 )
 
 var configFile string
@@ -64,9 +65,13 @@ func main() {
 
 	calendar := app.New(sugarLog, storage)
 
-	server := internalhttp.NewServer(sugarLog, calendar, cfg)
+	server := internalhttp.NewServer(sugarLog, &cfg.Server, calendar)
 
-	if err = server.Start(ctx); err != nil {
+	osSignals := make(chan os.Signal, 1)
+	listenErr := make(chan error, 1)
+	signal.Notify(osSignals, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	if err = server.Start(ctx, osSignals, listenErr); err != nil {
 		sugarLog.Error(err)
 	}
 }
