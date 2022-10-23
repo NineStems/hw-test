@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"net"
 	"os"
 	"os/signal"
 	"syscall"
@@ -10,24 +9,25 @@ import (
 	"github.com/hw-test/hw12_13_14_15_calendar/common"
 	"github.com/hw-test/hw12_13_14_15_calendar/domain"
 	"github.com/hw-test/hw12_13_14_15_calendar/internal/config"
+	internalgrpc "github.com/hw-test/hw12_13_14_15_calendar/internal/server/grpc"
 	internalhttp "github.com/hw-test/hw12_13_14_15_calendar/internal/server/http"
-	"github.com/hw-test/hw12_13_14_15_calendar/internal/server/internalgrpc"
 )
 
 type Server struct {
 	cfg  *config.Config
 	log  common.Logger
-	app  domain.Application
-	ln   net.Listener
-	rest internalhttp.ServerHTTP
-	grpc internalgrpc.ServerGRPC
+	rest *internalhttp.ServerHTTP
+	grpc *internalgrpc.ServerGRPC
 }
 
 func NewServer(log common.Logger, cfg *config.Config, app domain.Application) *Server {
+	restNode := internalhttp.NewServer(log, &cfg.Server, app)
+	grpcNode := internalgrpc.NewServer(log, &cfg.Server, app)
 	return &Server{
-		cfg: cfg,
-		log: log,
-		app: app,
+		cfg:  cfg,
+		log:  log,
+		rest: restNode,
+		grpc: grpcNode,
 	}
 }
 
@@ -39,20 +39,18 @@ func (s *Server) Start(ctx context.Context) error {
 	listenErr := make(chan error, 1)
 	signal.Notify(osSignals, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	if err := s.rest.Start(ctx, osSignals, listenErr); err != nil {
-		return err
-	}
+	go func() {
+		if err := s.rest.Start(ctx, osSignals, listenErr); err != nil {
+			listenErr <- err
+		}
+	}()
+
+	go func() {
+		if err := s.grpc.Start(ctx, osSignals, listenErr); err != nil {
+			listenErr <- err
+		}
+	}()
 
 	<-ctx.Done()
-	return nil
-}
-
-func StartHTTP(ctx context.Context) error {
-
-	return nil
-}
-
-func StartGRPC(ctx context.Context) error {
-
 	return nil
 }

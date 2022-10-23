@@ -1,9 +1,10 @@
-package internalgrpc
+package grpc
 
 import (
 	"context"
 	"log"
 	"net"
+	"os"
 
 	"google.golang.org/grpc"
 
@@ -29,20 +30,32 @@ func NewServer(log common.Logger, cfg *config.Server, app domain.Application) *S
 	}
 }
 
-func (s *ServerGRPC) Start(ctx context.Context) error {
+func (s *ServerGRPC) Start(ctx context.Context, osSignals chan os.Signal, listenErr chan error) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	lis, err := net.Listen("tcp", s.cfg.Grpc.Host+":"+s.cfg.Grpc.Port)
+	var err error
+	s.ln, err = net.Listen("tcp", s.cfg.Grpc.Host+":"+s.cfg.Grpc.Port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	gs := grpc.NewServer()
 	v1.RegisterCalendarServer(gs, s)
 
-	if err := gs.Serve(lis); err != nil {
-		return err
-	}
+	go func() {
+		s.log.Infof("grpc server started on %s", s.ln.Addr())
+		listenErr <- gs.Serve(s.ln)
+	}()
 
-	return nil
+	for {
+		select {
+		case err = <-listenErr:
+			s.log.Errorf("grpc server stopped error:v", err)
+			return err
+		case <-osSignals:
+			s.log.Info("grpc server stopped")
+			gs.GracefulStop()
+			s.log.Info("grpc server exited properly")
+		}
+	}
 }

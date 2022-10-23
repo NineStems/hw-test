@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"os"
 	"os/signal"
 	"syscall"
 
@@ -16,7 +15,7 @@ import (
 	"github.com/hw-test/hw12_13_14_15_calendar/internal/pkg/logger"
 	memorystorage "github.com/hw-test/hw12_13_14_15_calendar/internal/repository/storage/memory"
 	sqlstorage "github.com/hw-test/hw12_13_14_15_calendar/internal/repository/storage/sql"
-	internalhttp "github.com/hw-test/hw12_13_14_15_calendar/internal/server/http"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/server"
 )
 
 var configFile string
@@ -65,13 +64,8 @@ func main() {
 
 	calendar := app.New(sugarLog, storage)
 
-	server := internalhttp.NewServer(sugarLog, &cfg.Server, calendar)
-
-	osSignals := make(chan os.Signal, 1)
-	listenErr := make(chan error, 1)
-	signal.Notify(osSignals, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
-
-	if err = server.Start(ctx, osSignals, listenErr); err != nil {
+	srv := server.NewServer(sugarLog, cfg, calendar)
+	if err = srv.Start(ctx); err != nil {
 		sugarLog.Error(err)
 	}
 }

@@ -6,8 +6,8 @@ import (
 )
 
 type Application interface {
-	CreateEvent(ctx context.Context, notification *Event) (string, error)
-	UpdateEvent(ctx context.Context, notification *Event) error
+	CreateEvent(ctx context.Context, event *Event) (string, error)
+	UpdateEvent(ctx context.Context, event *Event) error
 	DeleteEvent(ctx context.Context, id string) error
-	ReadEvents(ctx context.Context, date time.Time, condition int) ([]Notification, error)
+	ReadEvents(ctx context.Context, date time.Time, condition int) ([]Event, error)
 }

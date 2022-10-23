@@ -6,8 +6,8 @@ import (
 	"github.com/hw-test/hw12_13_14_15_calendar/common"
 )
 
-func (s *ServerHTTP) defaultRoute() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello-world, action-id=" + r.Context().Value(common.CtxActionID).(string)))
-	})
+func (s *ServerHTTP) health() func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	return func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+		w.Write([]byte("health is ok, action-id=" + r.Context().Value(common.CtxActionID).(string)))
+	}
 }

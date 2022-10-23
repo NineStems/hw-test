@@ -50,6 +50,11 @@ func (s *ServerHTTP) Start(ctx context.Context, osSignals chan os.Signal, listen
 		return err
 	}
 
+	err = mux.HandlePath(http.MethodGet, "/health", s.health())
+	if err != nil {
+		return err
+	}
+
 	server := http.Server{
 		Handler: s.loggingMiddleware(mux),
 	}
@@ -62,6 +67,7 @@ func (s *ServerHTTP) Start(ctx context.Context, osSignals chan os.Signal, listen
 	for {
 		select {
 		case err = <-listenErr:
+			s.log.Errorf("rest server stopped error:v", err)
 			return err
 		case <-osSignals:
 			s.log.Info("rest server stopped")
