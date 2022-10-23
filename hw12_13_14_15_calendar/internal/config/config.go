@@ -6,7 +6,7 @@ import (
 
 	"gopkg.in/yaml.v2" // nolint
 
-	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors"
+	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors" //nolint
 )
 
 // Logger конфигурация для логгера.
