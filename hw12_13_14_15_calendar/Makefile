@@ -41,7 +41,7 @@ goose-down:
 	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" down
 
 goose-version:
-  goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" version
+	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" version
 
 generate:
 	protoc -I . \
