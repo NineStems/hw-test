@@ -25,7 +25,7 @@ func TestServer(t *testing.T) {
 		Server: config.Server{
 			Grpc: config.Grpc{
 				Host: "127.0.0.1",
-				Port: "8081",
+				Port: "12201",
 			},
 			Http: config.Rest{
 				Host: "127.0.0.1",
@@ -46,7 +46,7 @@ func TestServer(t *testing.T) {
 
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	conn, err := grpc.Dial(":8081", opts...)
+	conn, err := grpc.Dial(":12201", opts...)
 	require.NoError(t, err)
 
 	defer conn.Close()
