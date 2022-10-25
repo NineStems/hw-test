@@ -42,7 +42,7 @@ func TestServer(t *testing.T) {
 	defer cancel()
 
 	go srv.Start(ctx)
-	time.Sleep(time.Millisecond * 1)
+	time.Sleep(time.Second * 1)
 
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
