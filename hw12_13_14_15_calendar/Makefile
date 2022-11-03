@@ -41,6 +41,15 @@ goose-down:
 	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" down
 
 goose-version:
-	goose -dir="migrations" postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" version
+	goose postgres "host=localhost port=5432 user=postgres password=password dbname=postgres sslmode=disable" version
+
+generate:
+	protoc -I . \
+			--go_out . \
+			--go-grpc_out . \
+			--grpc-gateway_out . \
+      		--grpc-gateway_opt logtostderr=true \
+        	--grpc-gateway_opt generate_unbound_methods=true \
+			proto/api/v1/*.proto
 
 .PHONY: build run build-img run-img version test lint

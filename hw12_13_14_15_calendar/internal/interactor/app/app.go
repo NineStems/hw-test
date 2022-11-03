@@ -4,9 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/calendar/hw12_13_14_15_calendar/common"
-	"github.com/calendar/hw12_13_14_15_calendar/domain"
-	"github.com/calendar/hw12_13_14_15_calendar/pkg/errors"
+	"github.com/hw-test/hw12_13_14_15_calendar/common"
+	"github.com/hw-test/hw12_13_14_15_calendar/domain"
+	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors"
 )
 
 type App struct {
@@ -28,7 +28,7 @@ func New(logger common.Logger, storage Storage) *App {
 	}
 }
 
-// CreateEvent создаёт уведомление.
+// CreateEvent создаёт событие.
 func (a *App) CreateEvent(ctx context.Context, event *domain.Event) (string, error) {
 	id, err := a.db.Create(ctx, event)
 	if err != nil {
@@ -37,7 +37,7 @@ func (a *App) CreateEvent(ctx context.Context, event *domain.Event) (string, err
 	return id, nil
 }
 
-// UpdateEvent обновляет уведомление.
+// UpdateEvent обновляет событие.
 func (a *App) UpdateEvent(ctx context.Context, event *domain.Event) error {
 	if err := a.db.Update(ctx, event); err != nil {
 		return errors.Wrap(err, "a.db.Update")
@@ -45,7 +45,7 @@ func (a *App) UpdateEvent(ctx context.Context, event *domain.Event) error {
 	return nil
 }
 
-// DeleteEvent удаляет уведомление.
+// DeleteEvent удаляет событие.
 func (a *App) DeleteEvent(ctx context.Context, id string) error {
 	if err := a.db.Delete(ctx, id); err != nil {
 		return errors.Wrap(err, "a.db.Delete")
@@ -53,8 +53,8 @@ func (a *App) DeleteEvent(ctx context.Context, id string) error {
 	return nil
 }
 
-// ReadEvents получает уведомления по условию.
-func (a *App) ReadEvents(ctx context.Context, date time.Time, condition int) ([]domain.Notification, error) {
+// ReadEvents получает события по условию.
+func (a *App) ReadEvents(ctx context.Context, date time.Time, condition int) ([]domain.Event, error) {
 	if date.IsZero() {
 		condition = domain.TakeAllNotification
 	}
@@ -67,10 +67,5 @@ func (a *App) ReadEvents(ctx context.Context, date time.Time, condition int) ([]
 		return nil, nil
 	}
 
-	notification := make([]domain.Notification, 0, len(events))
-	for i := range events {
-		notification = append(notification, events[i].GetNotification())
-	}
-
-	return notification, nil
+	return events, nil
 }

@@ -6,7 +6,7 @@ import (
 
 	"gopkg.in/yaml.v2" // nolint
 
-	"github.com/calendar/hw12_13_14_15_calendar/pkg/errors"
+	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors" // nolint
 )
 
 // Logger конфигурация для логгера.
@@ -15,10 +15,20 @@ type Logger struct {
 	Level string `yaml:"level"`
 }
 
+type Grpc struct {
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
+}
+
+type Rest struct {
+	Host string `yaml:"host"`
+	Port string `yaml:"port"`
+}
+
 // Server конфигурация для HTTP сервера.
 type Server struct {
-	Port string `yaml:"port"`
-	Host string `yaml:"host"`
+	Grpc Grpc `yaml:"grpc"`
+	Http Rest `yaml:"rest"`
 }
 
 // Database конфигурация для базы данных.
