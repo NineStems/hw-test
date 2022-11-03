@@ -4,9 +4,9 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/yaml.v2" // nolint
+	"gopkg.in/yaml.v2" //nolint
 
-	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors" // nolint
+	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors" //nolint
 )
 
 // Logger конфигурация для логгера.
@@ -76,7 +76,7 @@ func (c *Config) Apply(path string) error {
 	}
 	defer f.Close()
 
-	decoder := yaml.NewDecoder(f) // nolint
+	decoder := yaml.NewDecoder(f)
 	if err = decoder.Decode(c); err != nil {
 		return errors.Wrap(err, "decoder.Decode")
 	}
