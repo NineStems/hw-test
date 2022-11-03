@@ -33,6 +33,17 @@ type Event struct {
 	Description      string    // Описание события, длинный текст
 }
 
+func (e Event) NeedNotification(date time.Time) bool {
+	if !e.DateNotification.IsZero() {
+		conditionBefore := date.After(e.DateNotification) || date.Equal(e.DateNotification)
+		conditionAfter := !date.Add(time.Minute * -5).After(e.DateNotification)
+		return conditionBefore && conditionAfter
+
+	}
+	return (date.After(e.Date) || date.Equal(e.Date)) &&
+		!date.Add(time.Minute*-5).After(e.Date)
+}
+
 // GetNotification возвращает уведомление на основании события.
 func (e Event) GetNotification() Notification {
 	return Notification{

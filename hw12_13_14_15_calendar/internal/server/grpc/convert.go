@@ -94,3 +94,26 @@ func EventsFromDomain(in []domain.Event) []*v1.Event {
 	}
 	return list
 }
+
+func EventToDomain(in *v1.Event) *domain.Event {
+	date, _ := time.Parse(time.RFC3339, in.GetDate())
+	dateEnd, _ := time.Parse(time.RFC3339, in.GetDateEnd())
+	dateNotification, _ := time.Parse(time.RFC3339, in.GetDateNotification())
+	return &domain.Event{
+		ID:               in.GetId(),
+		OwnerID:          int(in.GetOwnerId()),
+		Title:            in.GetTitle(),
+		Date:             date,
+		DateEnd:          dateEnd,
+		DateNotification: dateNotification,
+		Description:      in.GetDescription(),
+	}
+}
+
+func EventsToDomain(in []*v1.Event) []domain.Event {
+	list := make([]domain.Event, 0, len(in))
+	for i := range in {
+		list = append(list, *EventToDomain(in[i]))
+	}
+	return list
+}

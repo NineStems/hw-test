@@ -42,11 +42,30 @@ type Database struct {
 	Timeout  time.Duration `yaml:"timeout"`
 }
 
+type Scheduler struct {
+	Pause time.Duration `yaml:"pause"`
+}
+
+// Rabbit конфигурация очереди.
+type Rabbit struct {
+	Host       string `yaml:"host"`
+	Port       string `yaml:"port"`
+	Exchange   string `yaml:"exchange"`
+	Queue      string `yaml:"queue"`
+	Key        string `yaml:"key"`
+	Credential struct {
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
+	} `yaml:"credential"`
+}
+
 // Config конфигурация сервиса.
 type Config struct {
-	Logger   Logger   `yaml:"logger"`
-	Server   Server   `yaml:"server"`
-	Database Database `yaml:"database"`
+	Logger    Logger    `yaml:"logger"`
+	Scheduler Scheduler `yaml:"scheduler"`
+	Rabbit    Rabbit    `yaml:"rabbit"`
+	Server    Server    `yaml:"server"`
+	Database  Database  `yaml:"database"`
 }
 
 // Apply применяет значение из конфигурационного файла.

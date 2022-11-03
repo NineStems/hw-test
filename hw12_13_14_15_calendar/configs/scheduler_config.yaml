@@ -1,0 +1,25 @@
+# Конфигурация логгера
+logger:
+  path: "logs/scheduler-logs.log"
+  level: "debug"
+
+# Конфигурация планировщика
+scheduler:
+  pause: "1s"
+
+# Конфигурация сервера
+server:
+  grpc:
+    host: "localhost"
+    port: 8081
+
+# Конфигурация очереди
+rabbit:
+  host: "localhost"
+  port: "5672"
+  exchange: "calendar-exchange-events"
+  queue: "calendar-queue-events"
+  key: "events"
+  credential:
+    username: "guest"
+    password: "guest"
