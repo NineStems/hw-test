@@ -76,7 +76,7 @@ func (c *Config) Apply(path string) error {
 	}
 	defer f.Close()
 
-	decoder := yaml.NewDecoder(f)
+	decoder := yaml.NewDecoder(f) //nolint: typecheck,nolintlint
 	if err = decoder.Decode(c); err != nil {
 		return errors.Wrap(err, "decoder.Decode")
 	}
