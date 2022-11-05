@@ -7,6 +7,7 @@ import (
 	"net"
 	"os/signal"
 	"syscall"
+	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 	"google.golang.org/grpc"
@@ -45,16 +46,31 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	defer cancel()
 
-	connRabbit, err := amqp.Dial(fmt.Sprintf(
-		"amqp://%v:%v@%v/",
-		cfg.Rabbit.Credential.Username,
-		cfg.Rabbit.Credential.Password,
-		net.JoinHostPort(cfg.Rabbit.Host, cfg.Rabbit.Port),
-	))
-	if err != nil {
-		sugarLog.Error(err)
+	var connRabbit *amqp.Connection
+	retryTime := time.Second * 0
+	retryCount := 0
+	retryCountMax := 10
+
+	for retryCount < retryCountMax && connRabbit == nil {
+		time.Sleep(retryTime)
+		retryTime += (retryTime + time.Second) * 2
+		connRabbit, err = amqp.Dial(fmt.Sprintf(
+			"amqp://%v:%v@%v/",
+			cfg.Rabbit.Credential.Username,
+			cfg.Rabbit.Credential.Password,
+			net.JoinHostPort(cfg.Rabbit.Host, cfg.Rabbit.Port),
+		))
+		if err != nil {
+			sugarLog.Error(err)
+		}
+		retryCount++
+	}
+
+	if connRabbit == nil {
+		sugarLog.Error("Cant connect to rabbitMQ")
 		return
 	}
+
 	defer connRabbit.Close()
 
 	rabbitClient := rabbit.New(connRabbit, sugarLog, cfg.Rabbit)
