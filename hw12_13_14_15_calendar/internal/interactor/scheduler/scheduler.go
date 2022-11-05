@@ -66,6 +66,7 @@ func (a *App) readAndPushEvents(ctx context.Context) {
 	}
 	response, err := a.client.ReadEvents(ctx, &request)
 	if err != nil {
+		a.logger.Errorf("ReadEvents: err='%v'", err)
 		return
 	}
 	if len(response.Events) == 0 {
@@ -73,7 +74,11 @@ func (a *App) readAndPushEvents(ctx context.Context) {
 		return
 	}
 
-	events := grpc.EventsToDomain(response.Events)
+	events, err := grpc.EventsToDomain(response.Events)
+	if err != nil {
+		a.logger.Errorf("EventsToDomain: err='%v'", err)
+		return
+	}
 	for _, event := range events {
 		if !event.NeedNotification(now) {
 			continue
@@ -101,13 +106,22 @@ func (a *App) clearOldEvents(ctx context.Context) {
 	if len(response.Events) == 0 {
 		return
 	}
-	events := grpc.EventsToDomain(response.Events)
+	var ids []string
+	events, err := grpc.EventsToDomain(response.Events)
+	if err != nil {
+		a.logger.Errorf("EventsToDomain: err='%v'", err)
+		return
+	}
 	for i := range events {
 		if !events[i].Date.Before(now.AddDate(-1, 0, 0)) {
 			continue
 		}
-		if _, err = a.client.DeleteEvent(ctx, &v1.DeleteRequest{Id: events[i].ID}); err != nil {
-			a.logger.Errorf("DeleteEvent: error='%v'", err)
+		ids = append(ids, events[i].ID)
+	}
+
+	if len(ids) > 0 {
+		if _, err = a.client.DeleteEvents(ctx, &v1.DeleteEventsRequest{Ids: ids}); err != nil {
+			a.logger.Errorf("DeleteEvents: error='%v'", err)
 		}
 	}
 

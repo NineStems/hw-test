@@ -42,7 +42,13 @@ type Database struct {
 	Timeout  time.Duration `yaml:"timeout"`
 }
 
+// Scheduler конфигурация планировщика.
 type Scheduler struct {
+	Pause time.Duration `yaml:"pause"`
+}
+
+// Sender конфигурация отправщика.
+type Sender struct {
 	Pause time.Duration `yaml:"pause"`
 }
 
@@ -63,6 +69,7 @@ type Rabbit struct {
 type Config struct {
 	Logger    Logger    `yaml:"logger"`
 	Scheduler Scheduler `yaml:"scheduler"`
+	Sender    Sender    `yaml:"sender"`
 	Rabbit    Rabbit    `yaml:"rabbit"`
 	Server    Server    `yaml:"server"`
 	Database  Database  `yaml:"database"`

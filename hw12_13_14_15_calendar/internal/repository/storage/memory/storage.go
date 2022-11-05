@@ -73,11 +73,13 @@ func (s *Storage) Update(ctx context.Context, event *domain.Event) error {
 	return nil
 }
 
-func (s *Storage) Delete(ctx context.Context, id string) error {
+func (s *Storage) Delete(ctx context.Context, ids []string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	delete(s.data, id)
-	s.log.Debugw(actionDelete, ctxEventID, id)
+	for _, id := range ids {
+		delete(s.data, id)
+		s.log.Debugw(actionDelete, ctxEventID, id)
+	}
 	return nil
 }
 

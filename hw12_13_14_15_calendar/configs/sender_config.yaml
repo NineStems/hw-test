@@ -4,7 +4,7 @@ logger:
   level: "debug"
 
 # Конфигурация планировщика
-scheduler:
+sender:
   pause: "5s"
 
 # Конфигурация очереди

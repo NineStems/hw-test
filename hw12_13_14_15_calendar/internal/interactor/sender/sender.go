@@ -6,6 +6,7 @@ import (
 
 	v1 "github.com/hw-test/hw12_13_14_15_calendar/api/v1"
 	"github.com/hw-test/hw12_13_14_15_calendar/common"
+	"github.com/hw-test/hw12_13_14_15_calendar/internal/config"
 	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors"
 )
 
@@ -19,17 +20,20 @@ type App struct {
 	logger common.Logger
 	client v1.CalendarClient
 	rabbit Rabbit
+	cfg    config.Sender
 }
 
 func New(
 	logger common.Logger,
 	client v1.CalendarClient,
 	rabbit Rabbit,
+	cfg config.Sender,
 ) *App {
 	return &App{
 		logger: logger,
 		client: client,
 		rabbit: rabbit,
+		cfg:    cfg,
 	}
 }
 
@@ -53,7 +57,7 @@ func (a *App) Start(ctx context.Context) error {
 		case body := <-bodies:
 			a.logger.Infof("consume message %v", string(body))
 		default:
-			time.Sleep(time.Second * 1)
+			time.Sleep(a.cfg.Pause)
 		}
 	}
 

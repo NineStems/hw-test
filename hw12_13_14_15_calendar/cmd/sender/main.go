@@ -70,7 +70,7 @@ func main() {
 
 	client := v1.NewCalendarClient(connGrpc)
 
-	app := sender.New(sugarLog, client, rabbitClient)
+	app := sender.New(sugarLog, client, rabbitClient, cfg.Sender)
 	err = app.Start(ctx)
 	if err != nil {
 		sugarLog.Error(err)

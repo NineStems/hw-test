@@ -39,7 +39,16 @@ func (s *ServerGRPC) UpdateEvent(ctx context.Context, req *v1.UpdateRequest) (*v
 }
 
 func (s *ServerGRPC) DeleteEvent(ctx context.Context, req *v1.DeleteRequest) (*v1.Empty, error) {
-	err := s.app.DeleteEvent(ctx, req.Id)
+	err := s.app.DeleteEvent(ctx, []string{req.Id})
+	if err != nil {
+		return nil, errors.Wrap(err, "s.app.DeleteEvent")
+	}
+
+	return &v1.Empty{}, nil
+}
+
+func (s *ServerGRPC) DeleteEvents(ctx context.Context, req *v1.DeleteEventsRequest) (*v1.Empty, error) {
+	err := s.app.DeleteEvent(ctx, req.Ids)
 	if err != nil {
 		return nil, errors.Wrap(err, "s.app.DeleteEvent")
 	}
