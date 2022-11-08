@@ -26,6 +26,13 @@ service Calendar{
       delete: "/event/{id}/delete"
     };
   };
+  // DeleteEvents удаляет все события по переданным идентификаторам.
+  rpc DeleteEvents(DeleteEventsRequest) returns(Empty){
+    option (google.api.http) = {
+      post: "/events/delete"
+      body: "*"
+    };
+  };
   // ReadEvents возвращает события на основании переданных параметров.
   rpc ReadEvents(ReadRequest) returns(ReadResult){
     option (google.api.http) = {
@@ -67,6 +74,11 @@ message UpdateRequest{
 // DeleteRequest запрос для удаления события.
 message DeleteRequest{
   string id = 1;
+}
+
+// DeleteEventsRequest
+message DeleteEventsRequest{
+  repeated string ids = 1;
 }
 
 // ReadRequest запрос на получения событий по условию.

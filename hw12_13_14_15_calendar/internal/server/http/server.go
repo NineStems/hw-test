@@ -38,7 +38,7 @@ func (s *ServerHTTP) Start(ctx context.Context, osSignals chan os.Signal, listen
 	defer cancel()
 
 	var err error
-	s.ln, err = net.Listen("tcp4", s.cfg.Http.Host+":"+s.cfg.Http.Port)
+	s.ln, err = net.Listen("tcp4", net.JoinHostPort(s.cfg.Http.Host, s.cfg.Http.Port))
 	if err != nil {
 		return err
 	}

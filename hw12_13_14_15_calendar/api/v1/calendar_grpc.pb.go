@@ -28,6 +28,8 @@ type CalendarClient interface {
 	UpdateEvent(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*Empty, error)
 	// DeleteEvent удаляет событие по ID и возвращает только ошибку при наличии.
 	DeleteEvent(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*Empty, error)
+	// DeleteEvents удаляет все события по переданным идентификаторам.
+	DeleteEvents(ctx context.Context, in *DeleteEventsRequest, opts ...grpc.CallOption) (*Empty, error)
 	// ReadEvents возвращает события на основании переданных параметров.
 	ReadEvents(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResult, error)
 }
@@ -67,6 +69,15 @@ func (c *calendarClient) DeleteEvent(ctx context.Context, in *DeleteRequest, opt
 	return out, nil
 }
 
+func (c *calendarClient) DeleteEvents(ctx context.Context, in *DeleteEventsRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/v1.Calendar/DeleteEvents", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *calendarClient) ReadEvents(ctx context.Context, in *ReadRequest, opts ...grpc.CallOption) (*ReadResult, error) {
 	out := new(ReadResult)
 	err := c.cc.Invoke(ctx, "/v1.Calendar/ReadEvents", in, out, opts...)
@@ -86,6 +97,8 @@ type CalendarServer interface {
 	UpdateEvent(context.Context, *UpdateRequest) (*Empty, error)
 	// DeleteEvent удаляет событие по ID и возвращает только ошибку при наличии.
 	DeleteEvent(context.Context, *DeleteRequest) (*Empty, error)
+	// DeleteEvents удаляет все события по переданным идентификаторам.
+	DeleteEvents(context.Context, *DeleteEventsRequest) (*Empty, error)
 	// ReadEvents возвращает события на основании переданных параметров.
 	ReadEvents(context.Context, *ReadRequest) (*ReadResult, error)
 	mustEmbedUnimplementedCalendarServer()
@@ -103,6 +116,9 @@ func (UnimplementedCalendarServer) UpdateEvent(context.Context, *UpdateRequest) 
 }
 func (UnimplementedCalendarServer) DeleteEvent(context.Context, *DeleteRequest) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteEvent not implemented")
+}
+func (UnimplementedCalendarServer) DeleteEvents(context.Context, *DeleteEventsRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteEvents not implemented")
 }
 func (UnimplementedCalendarServer) ReadEvents(context.Context, *ReadRequest) (*ReadResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ReadEvents not implemented")
@@ -174,6 +190,24 @@ func _Calendar_DeleteEvent_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Calendar_DeleteEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteEventsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CalendarServer).DeleteEvents(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/v1.Calendar/DeleteEvents",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CalendarServer).DeleteEvents(ctx, req.(*DeleteEventsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Calendar_ReadEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ReadRequest)
 	if err := dec(in); err != nil {
@@ -210,6 +244,10 @@ var Calendar_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteEvent",
 			Handler:    _Calendar_DeleteEvent_Handler,
+		},
+		{
+			MethodName: "DeleteEvents",
+			Handler:    _Calendar_DeleteEvents_Handler,
 		},
 		{
 			MethodName: "ReadEvents",

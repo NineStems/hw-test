@@ -94,3 +94,39 @@ func EventsFromDomain(in []domain.Event) []*v1.Event {
 	}
 	return list
 }
+
+func EventToDomain(in *v1.Event) (*domain.Event, error) {
+	date, err := time.Parse(time.RFC3339, in.GetDate())
+	if err != nil {
+		return nil, err
+	}
+	dateEnd, err := time.Parse(time.RFC3339, in.GetDateEnd())
+	if err != nil {
+		return nil, err
+	}
+	dateNotification, err := time.Parse(time.RFC3339, in.GetDateNotification())
+	if err != nil {
+		return nil, err
+	}
+	return &domain.Event{
+		ID:               in.GetId(),
+		OwnerID:          int(in.GetOwnerId()),
+		Title:            in.GetTitle(),
+		Date:             date,
+		DateEnd:          dateEnd,
+		DateNotification: dateNotification,
+		Description:      in.GetDescription(),
+	}, nil
+}
+
+func EventsToDomain(in []*v1.Event) ([]domain.Event, error) {
+	list := make([]domain.Event, 0, len(in))
+	for i := range in {
+		event, err := EventToDomain(in[i])
+		if err != nil {
+			return nil, err
+		}
+		list = append(list, *event)
+	}
+	return list, nil
+}

@@ -100,7 +100,7 @@ func TestStorage(t *testing.T) { //nolint: gocognit
 			t.Errorf("condition=%d, wait len of events=%d, but got=%d", domain.TakeAllNotification, 1, len(events))
 		}
 
-		err = storage.Delete(ctx, events[0].ID)
+		err = storage.Delete(ctx, []string{events[0].ID})
 		if err != nil {
 			t.Error(err)
 		}

@@ -21,7 +21,7 @@ import (
 var configFile string
 
 func init() {
-	flag.StringVar(&configFile, "config", "/etc/calendar/config.toml", "Path to configuration file")
+	flag.StringVar(&configFile, "config", "configs/calendar_config.yaml", "Path to configuration file")
 }
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	}
 
 	cfg := config.New()
-	err := cfg.Apply("configs/config.yaml")
+	err := cfg.Apply(configFile)
 	if err != nil {
 		panic(err)
 	}

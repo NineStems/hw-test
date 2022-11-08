@@ -73,11 +73,13 @@ func (s *Storage) Update(ctx context.Context, event *domain.Event) error {
 	return nil
 }
 
-func (s *Storage) Delete(ctx context.Context, id string) error {
+func (s *Storage) Delete(ctx context.Context, ids []string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	delete(s.data, id)
-	s.log.Debugw(actionDelete, ctxEventID, id)
+	for _, id := range ids {
+		delete(s.data, id)
+		s.log.Debugw(actionDelete, ctxEventID, id)
+	}
 	return nil
 }
 
@@ -92,9 +94,9 @@ func (s *Storage) Read(ctx context.Context, date time.Time, condition int) ([]do
 	case domain.TakeDayPeriodNotification:
 		start, end = util.StartDateDay(date), util.EndDateDay(date)
 	case domain.TakeWeekPeriodNotification:
-		start, end = util.StartDateDay(date), util.EndDateDay(date)
+		start, end = util.StartDateWeek(date), util.EndDateWeek(date)
 	case domain.TakeMonthPeriodNotification:
-		start, end = util.StartDateDay(date), util.EndDateDay(date)
+		start, end = util.StartDateMonth(date), util.EndDateMonth(date)
 	default:
 		return nil, domain.ErrNotDefinedPeriod
 	}

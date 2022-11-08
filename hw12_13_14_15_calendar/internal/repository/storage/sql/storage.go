@@ -3,6 +3,8 @@ package sqlstorage
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/hw-test/hw12_13_14_15_calendar/domain"
@@ -106,14 +108,16 @@ func (s *Storage) Update(ctx context.Context, event *domain.Event) error {
 	return nil
 }
 
-func (s *Storage) Delete(ctx context.Context, id string) error {
-	if err := s.checkExists(ctx, id); err != nil {
-		return errors.Wrap(err, "s.checkExists")
+func (s *Storage) Delete(ctx context.Context, ids []string) error {
+	for _, id := range ids {
+		if err := s.checkExists(ctx, id); err != nil {
+			return errors.Wrap(err, "s.checkExists")
+		}
 	}
 
-	query := `DELETE FROM otus.notification WHERE ID=$1`
+	query := fmt.Sprintf("DELETE FROM otus.notification WHERE id IN ('%s')", strings.Join(ids, "', '"))
 
-	if err := s.db.Exec(ctx, query, id); err != nil {
+	if err := s.db.Exec(ctx, query); err != nil {
 		return errors.Wrap(err, "s.db.Exec")
 	}
 

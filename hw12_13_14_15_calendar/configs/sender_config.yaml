@@ -1,0 +1,18 @@
+# Конфигурация логгера
+logger:
+  path: "logs/sender-logs.log"
+  level: "debug"
+
+# Конфигурация планировщика
+sender:
+  pause: "5s"
+
+# Конфигурация очереди
+rabbit:
+  host: "localhost"
+  port: "5672"
+  exchange: "calendar-exchange-events"
+  queue: "calendar-queue-events"
+  credential:
+    username: "guest"
+    password: "guest"

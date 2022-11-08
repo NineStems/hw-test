@@ -35,7 +35,7 @@ func (s *ServerGRPC) Start(ctx context.Context, osSignals chan os.Signal, listen
 	defer cancel()
 
 	var err error
-	s.ln, err = net.Listen("tcp", s.cfg.Grpc.Host+":"+s.cfg.Grpc.Port)
+	s.ln, err = net.Listen("tcp", net.JoinHostPort(s.cfg.Grpc.Host, s.cfg.Grpc.Port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

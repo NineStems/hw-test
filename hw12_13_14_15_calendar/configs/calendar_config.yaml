@@ -1,6 +1,6 @@
 # Конфигурация логгера
 logger:
-  path: "logs/logs.log"
+  path: "logs/calendar-logs.log"
   level: "debug"
 
 # Конфигурация сервера

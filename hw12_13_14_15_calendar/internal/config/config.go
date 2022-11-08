@@ -4,9 +4,9 @@ import (
 	"os"
 	"time"
 
-	"gopkg.in/yaml.v2" // nolint
+	"gopkg.in/yaml.v2" //nolint
 
-	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors" // nolint
+	"github.com/hw-test/hw12_13_14_15_calendar/pkg/errors" //nolint
 )
 
 // Logger конфигурация для логгера.
@@ -42,11 +42,37 @@ type Database struct {
 	Timeout  time.Duration `yaml:"timeout"`
 }
 
+// Scheduler конфигурация планировщика.
+type Scheduler struct {
+	Pause time.Duration `yaml:"pause"`
+}
+
+// Sender конфигурация отправщика.
+type Sender struct {
+	Pause time.Duration `yaml:"pause"`
+}
+
+// Rabbit конфигурация очереди.
+type Rabbit struct {
+	Host       string `yaml:"host"`
+	Port       string `yaml:"port"`
+	Exchange   string `yaml:"exchange"`
+	Queue      string `yaml:"queue"`
+	Key        string `yaml:"key"`
+	Credential struct {
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
+	} `yaml:"credential"`
+}
+
 // Config конфигурация сервиса.
 type Config struct {
-	Logger   Logger   `yaml:"logger"`
-	Server   Server   `yaml:"server"`
-	Database Database `yaml:"database"`
+	Logger    Logger    `yaml:"logger"`
+	Scheduler Scheduler `yaml:"scheduler"`
+	Sender    Sender    `yaml:"sender"`
+	Rabbit    Rabbit    `yaml:"rabbit"`
+	Server    Server    `yaml:"server"`
+	Database  Database  `yaml:"database"`
 }
 
 // Apply применяет значение из конфигурационного файла.
@@ -57,7 +83,7 @@ func (c *Config) Apply(path string) error {
 	}
 	defer f.Close()
 
-	decoder := yaml.NewDecoder(f) // nolint
+	decoder := yaml.NewDecoder(f) //nolint: typecheck,nolintlint
 	if err = decoder.Decode(c); err != nil {
 		return errors.Wrap(err, "decoder.Decode")
 	}

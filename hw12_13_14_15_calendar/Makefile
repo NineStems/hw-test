@@ -1,4 +1,6 @@
 BIN := "./bin/calendar"
+BIN_SCHEDULER= "./bin/calendar_scheduler"
+BIN_SENDER= "./bin/calendar_sender"
 DOCKER_IMG="calendar:develop"
 
 GIT_HASH := $(shell git log --format="%h" -n 1)
@@ -6,9 +8,11 @@ LDFLAGS := -X main.release="develop" -X main.buildDate=$(shell date -u +%Y-%m-%d
 
 build:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/calendar
+	go build -v -o $(BIN_SCHEDULER) -ldflags "$(LDFLAGS)" ./cmd/scheduler
+	go build -v -o $(BIN_SENDER) -ldflags "$(LDFLAGS)" ./cmd/sender
 
 run: build
-	$(BIN) -config ./configs/config.yaml
+	$(BIN) -config ./configs/calendar_config.yaml
 
 build-img:
 	docker build \
@@ -51,5 +55,8 @@ generate:
       		--grpc-gateway_opt logtostderr=true \
         	--grpc-gateway_opt generate_unbound_methods=true \
 			proto/api/v1/*.proto
+
+docker-servise-up:
+	docker-compose -f deployments/docker-compose.yaml up -d --force-recreate
 
 .PHONY: build run build-img run-img version test lint

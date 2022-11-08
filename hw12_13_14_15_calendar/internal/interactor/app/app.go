@@ -17,7 +17,7 @@ type App struct {
 type Storage interface {
 	Create(ctx context.Context, event *domain.Event) (string, error)
 	Update(ctx context.Context, event *domain.Event) error
-	Delete(ctx context.Context, id string) error
+	Delete(ctx context.Context, id []string) error
 	Read(ctx context.Context, date time.Time, condition int) ([]domain.Event, error)
 }
 
@@ -46,7 +46,7 @@ func (a *App) UpdateEvent(ctx context.Context, event *domain.Event) error {
 }
 
 // DeleteEvent удаляет событие.
-func (a *App) DeleteEvent(ctx context.Context, id string) error {
+func (a *App) DeleteEvent(ctx context.Context, id []string) error {
 	if err := a.db.Delete(ctx, id); err != nil {
 		return errors.Wrap(err, "a.db.Delete")
 	}
