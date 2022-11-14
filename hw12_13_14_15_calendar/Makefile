@@ -56,7 +56,14 @@ generate:
         	--grpc-gateway_opt generate_unbound_methods=true \
 			proto/api/v1/*.proto
 
-docker-servise-up:
-	docker-compose -f deployments/docker-compose.yaml up -d --force-recreate
+docker-service-up:
+	docker-compose -f docker-compose.yaml up -d --force-recreate
+
+docker-service-down:
+	docker-compose -f docker-compose.yaml down
 
 .PHONY: build run build-img run-img version test lint
+
+up: docker-service-up goose-get goose-up
+
+down: goose-get goose-down docker-service-down
