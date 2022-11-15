@@ -84,6 +84,6 @@ func (p *DB) Exec(ctx context.Context, sql string, args ...interface{}) error {
 	return nil
 }
 
-func (p DB) log(ctx context.Context, action, sql string, args ...interface{}) {
+func (p *DB) log(ctx context.Context, action, sql string, args ...interface{}) {
 	p.logger.Debugw(action, common.CtxActionID, ctx.Value(common.CtxActionID), ctxSQL, clearSQL(sql), ctxArgs, args)
 }

@@ -11,7 +11,7 @@ FROM scratch
 COPY --from=build source/app/calendar_scheduler .
 COPY --from=build source/configs/scheduler_config.yaml configs/scheduler_config.yaml
 
-ENTRYPOINT ["/calendar"]
+ENTRYPOINT ["/calendar_scheduler"]
 
 
 

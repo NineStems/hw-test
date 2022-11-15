@@ -55,6 +55,7 @@ func main() {
 			panic(err)
 		}
 		defer db.Close()
+
 		storage = sqlstorage.New(db)
 	case "inmemory":
 		storage = memorystorage.New(sugarLog)

@@ -14,10 +14,10 @@ server:
 
 # Данные базы данных
 database:
-  source: "inmemory"
+  source: "postgres"
   user: "postgres"
   pass: "password"
-  host: "localhost"
+  host: "172.17.0.1"
   port: 5432
   database: "postgres"
   timeout: "60s"
