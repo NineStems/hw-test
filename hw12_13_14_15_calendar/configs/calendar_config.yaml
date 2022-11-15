@@ -17,7 +17,7 @@ database:
   source: "postgres"
   user: "postgres"
   pass: "password"
-  host: "172.17.0.1"
+  host: "pg-db"
   port: 5432
   database: "postgres"
   timeout: "60s"

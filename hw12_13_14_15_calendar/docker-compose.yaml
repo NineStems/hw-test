@@ -54,6 +54,18 @@ services:
     networks:
       - calendar-net
 
+  sender:
+    depends_on:
+      - db
+      - rabbitmq
+      - calendar
+    build:
+      context: .
+      dockerfile: ./docker/sender/Dockerfile
+    container_name: sender
+    networks:
+      - calendar-net
+
   migrator:
     depends_on:
       - db
