@@ -8,7 +8,7 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"github.com/pressly/goose/v3"
+	goose "github.com/pressly/goose/v3"
 
 	"github.com/hw-test/hw12_13_14_15_calendar/internal/config"
 )
