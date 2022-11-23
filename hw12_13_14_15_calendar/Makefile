@@ -68,4 +68,10 @@ up:
 down:
 	docker-compose -f docker-compose.yaml down
 
+integration:
+	 go test ./internal/integration_test -tags=integration -v
+
+integration-tests: up integration down
+
+
 .PHONY: build run build-img run-img version test lint

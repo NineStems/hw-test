@@ -132,9 +132,9 @@ func (s *Storage) Read(ctx context.Context, date time.Time, condition int) ([]do
 	case domain.TakeDayPeriodNotification:
 		start, end = util.StartDateDay(date), util.EndDateDay(date)
 	case domain.TakeWeekPeriodNotification:
-		start, end = util.StartDateDay(date), util.EndDateDay(date)
+		start, end = util.StartDateWeek(date), util.EndDateWeek(date)
 	case domain.TakeMonthPeriodNotification:
-		start, end = util.StartDateDay(date), util.EndDateDay(date)
+		start, end = util.StartDateMonth(date), util.EndDateMonth(date)
 	default:
 		return nil, domain.ErrNotDefinedPeriod
 	}
