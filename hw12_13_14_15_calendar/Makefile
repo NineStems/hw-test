@@ -71,7 +71,9 @@ down:
 integration:
 	 go test ./internal/integration_test -tags=integration -v
 
-integration-tests: up integration down
+pause:
+	sleep 2
 
+integration-tests: up pause integration down
 
 .PHONY: build run build-img run-img version test lint
