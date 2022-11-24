@@ -1,0 +1,77 @@
+version: "3"
+
+networks:
+  calendar-net: {}
+
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: pg-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - calendar-net
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - calendar-net
+
+  calendar:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: ./docker/calendar/Dockerfile
+    container_name: calendar
+    restart: always
+    ports:
+      - "8888:8080"
+    networks:
+      - calendar-net
+
+  scheduler:
+    depends_on:
+      - db
+      - rabbitmq
+      - calendar
+    build:
+      context: .
+      dockerfile: ./docker/scheduler/Dockerfile
+    restart: always
+    container_name: scheduler
+    networks:
+      - calendar-net
+
+  sender:
+    depends_on:
+      - db
+      - rabbitmq
+      - calendar
+    build:
+      context: .
+      dockerfile: ./docker/sender/Dockerfile
+    container_name: sender
+    networks:
+      - calendar-net
+
+  migrator:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: ./docker/migrator/Dockerfile
+    container_name: migrator
+    networks:
+      - calendar-net

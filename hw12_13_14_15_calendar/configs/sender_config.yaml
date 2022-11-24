@@ -9,7 +9,7 @@ sender:
 
 # Конфигурация очереди
 rabbit:
-  host: "localhost"
+  host: "rabbitmq"
   port: "5672"
   exchange: "calendar-exchange-events"
   queue: "calendar-queue-events"

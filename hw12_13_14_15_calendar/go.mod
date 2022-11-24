@@ -10,6 +10,8 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.7
+	github.com/pressly/goose v2.7.0+incompatible // indirect
+	github.com/pressly/goose/v3 v3.7.0 // indirect
 	github.com/rabbitmq/amqp091-go v1.5.0 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
 	go.uber.org/zap v1.23.0

@@ -1,6 +1,7 @@
 BIN := "./bin/calendar"
 BIN_SCHEDULER= "./bin/calendar_scheduler"
 BIN_SENDER= "./bin/calendar_sender"
+BIN_MIGRATOR= "./bin/migrator_sender"
 DOCKER_IMG="calendar:develop"
 
 GIT_HASH := $(shell git log --format="%h" -n 1)
@@ -10,9 +11,14 @@ build:
 	go build -v -o $(BIN) -ldflags "$(LDFLAGS)" ./cmd/calendar
 	go build -v -o $(BIN_SCHEDULER) -ldflags "$(LDFLAGS)" ./cmd/scheduler
 	go build -v -o $(BIN_SENDER) -ldflags "$(LDFLAGS)" ./cmd/sender
+	go build -v -o $(BIN_MIGRATOR) -ldflags "$(LDFLAGS)" ./cmd/migrator
+
 
 run: build
 	$(BIN) -config ./configs/calendar_config.yaml
+
+run-migrator: build
+	$(BIN_MIGRATOR) -config ./configs/calendar_config.yaml
 
 build-img:
 	docker build \
@@ -56,7 +62,18 @@ generate:
         	--grpc-gateway_opt generate_unbound_methods=true \
 			proto/api/v1/*.proto
 
-docker-servise-up:
-	docker-compose -f deployments/docker-compose.yaml up -d --force-recreate
+up:
+	docker-compose -f docker-compose.yaml up -d --force-recreate
+
+down:
+	docker-compose -f docker-compose.yaml down
+
+integration:
+	 go test ./internal/integration_test -tags=integration -v
+
+pause:
+	sleep 2
+
+integration-tests: up pause integration down
 
 .PHONY: build run build-img run-img version test lint

@@ -5,17 +5,17 @@ logger:
 
 # Конфигурация планировщика
 scheduler:
-  pause: "1s"
+  pause: "10s"
 
 # Конфигурация сервера
 server:
   grpc:
-    host: "localhost"
-    port: 8081
+    host: "calendar"
+    port: "8081"
 
 # Конфигурация очереди
 rabbit:
-  host: "localhost"
+  host: "rabbitmq"
   port: "5672"
   exchange: "calendar-exchange-events"
   queue: "calendar-queue-events"
